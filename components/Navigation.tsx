@@ -78,7 +78,7 @@ const Navigation: React.FC = () => {
     { path: '/', label: 'Home', icon: Home },
     { path: '/courses', label: 'Courses', icon: BookOpen, matchAlso: '/course' },
     { path: 'watch', label: 'Watch', icon: MonitorPlay, isWatch: true },
-    { path: '/games', label: 'Arcade', icon: Gamepad2 },
+    { path: '/games', label: 'Games', icon: Gamepad2 },
     { path: '/learn', label: 'Learn', icon: GraduationCap, matchAlso: '/learn' },
   ];
 
@@ -182,7 +182,7 @@ const Navigation: React.FC = () => {
                     <span>Your Journey</span>
                   </button>
                   <button
-                    onClick={() => { navigate('/profile/preferences'); setProfileDropdownOpen(false); }}
+                    onClick={() => { navigate('/profile'); setProfileDropdownOpen(false); }}
                     className="w-full flex items-center gap-3 px-4 py-2.5 text-left text-white/90 hover:bg-[#1C2433] transition-all duration-[180ms]"
                   >
                     <Settings className="w-4 h-4 text-white/50" />
@@ -321,7 +321,7 @@ const Navigation: React.FC = () => {
                         <span>My List</span>
                       </button>
                       <button
-                        onClick={() => { navigate('/profile/preferences'); setProfileDropdownOpen(false); }}
+                        onClick={() => { navigate('/profile'); setProfileDropdownOpen(false); }}
                         className="w-full flex items-center gap-3 px-4 py-2.5 text-left text-white/90 hover:bg-[#1C2433] transition-all duration-[180ms]"
                       >
                         <Settings className="w-4 h-4 text-white/50" />

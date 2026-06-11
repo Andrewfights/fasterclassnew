@@ -223,7 +223,7 @@ export const Dashboard: React.FC = () => {
               <button
                 key={topic.id}
                 onClick={() => navigate(`/topics/${topic.id}`)}
-                className="group relative flex-shrink-0 w-52 aspect-[4/3] rounded-xl overflow-hidden text-left border border-white/10 hover:border-white/30 transition-all duration-300"
+                className="group relative flex-shrink-0 w-52 aspect-[4/3] rounded-2xl overflow-hidden text-left border border-white/10 hover:border-white/30 transition-all duration-300"
               >
                 <img
                   src={topic.cover}
@@ -261,7 +261,7 @@ export const Dashboard: React.FC = () => {
                 onClick={() => navigate(`/experts/${expert.slug}`)}
                 className="group flex-shrink-0 w-36 text-left"
               >
-                <div className="relative aspect-[3/4] rounded-xl overflow-hidden mb-2 border border-white/10 group-hover:border-white/30 transition-all duration-300">
+                <div className="relative aspect-[3/4] rounded-2xl overflow-hidden mb-2 border border-white/10 group-hover:border-white/30 transition-all duration-300">
                   <img
                     src={expert.image}
                     alt={expert.name}
