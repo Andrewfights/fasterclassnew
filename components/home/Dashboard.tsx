@@ -13,6 +13,7 @@ import { gamificationService } from '../../services/gamificationService';
 import { INITIAL_VIDEOS, COURSES, formatDuration } from '../../constants';
 import { filterValidVideos } from '../../services/videoValidationService';
 import { FOUNDER_TOPICS } from '../../data/topics';
+import { getExperts } from '../../data/experts';
 import { HeroCarouselItem } from '../../types';
 import { HeroCarousel } from '../vod/HeroCarousel';
 
@@ -72,6 +73,12 @@ export const Dashboard: React.FC = () => {
       .filter(v => v.isVertical === true)
       .slice(0, 12);
   }, [validVideos]);
+
+  // Top experts (most curated talks) for the home rail
+  const topExperts = useMemo(
+    () => getExperts(validVideos.filter(v => !v.isVertical)).slice(0, 10),
+    [validVideos]
+  );
 
   // Get time-based greeting (hustle style)
   const greeting = useMemo(() => {
@@ -231,6 +238,41 @@ export const Dashboard: React.FC = () => {
                 <div className="absolute inset-0 p-4 flex flex-col justify-end">
                   <h3 className="text-base font-bold text-white">{topic.title}</h3>
                 </div>
+              </button>
+            ))}
+          </div>
+        </section>
+
+        {/* Learn from the Best - Experts */}
+        <section className="mb-10">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-semibold text-white">Learn from the Best</h2>
+            <Link
+              to="/experts"
+              className="text-sm text-[#c9a227] hover:text-[#d4af37] transition-colors flex items-center gap-1"
+            >
+              All Experts <ChevronRight className="w-4 h-4" />
+            </Link>
+          </div>
+          <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide" style={{ scrollbarWidth: 'none' }}>
+            {topExperts.map(expert => (
+              <button
+                key={expert.slug}
+                onClick={() => navigate(`/experts/${expert.slug}`)}
+                className="group flex-shrink-0 w-36 text-left"
+              >
+                <div className="relative aspect-[3/4] rounded-xl overflow-hidden mb-2 border border-white/10 group-hover:border-white/30 transition-all duration-300">
+                  <img
+                    src={expert.image}
+                    alt={expert.name}
+                    className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+                </div>
+                <h3 className="text-sm font-semibold text-white line-clamp-1 group-hover:text-[#c9a227] transition-colors">
+                  {expert.name}
+                </h3>
+                <p className="text-xs text-[#6B7280] line-clamp-1">{expert.role}</p>
               </button>
             ))}
           </div>

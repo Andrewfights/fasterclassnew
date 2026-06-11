@@ -11,6 +11,7 @@ import {
   User,
   Gamepad2,
   Compass,
+  Users,
   ChevronDown,
   LogOut,
   GraduationCap,
@@ -59,6 +60,7 @@ const Navigation: React.FC = () => {
   const mainNav = [
     { path: '/', label: 'Home', icon: Home },
     { path: '/topics', label: 'Topics', icon: Compass },
+    { path: '/experts', label: 'Experts', icon: Users },
     { path: '/vod', label: 'Watch', icon: Play, matchAlso: '/watch' },
     { path: '/courses', label: 'Courses', icon: BookOpen, matchAlso: '/course' },
     { path: '/learn', label: 'Learn', icon: GraduationCap },

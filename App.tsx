@@ -32,6 +32,9 @@ import { VODPage } from './components/vod';
 // Topics catalogue
 import { TopicsPage } from './components/topics';
 
+// Experts hero pages
+import { ExpertsPage } from './components/experts';
+
 // Details Page
 import { VideoDetailsPage } from './components/details/VideoDetailsPage';
 
@@ -276,6 +279,10 @@ function App() {
                   {/* Topics catalogue */}
                   <Route path="/topics" element={<TopicsPage />} />
                   <Route path="/topics/:topicId" element={<TopicsPage />} />
+
+                  {/* Experts hero pages */}
+                  <Route path="/experts" element={<ExpertsPage />} />
+                  <Route path="/experts/:expertId" element={<ExpertsPage />} />
 
                   {/* Resources (Glossary) */}
                   <Route path="/resources" element={<ResourcesPage />} />
