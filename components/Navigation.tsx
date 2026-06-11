@@ -293,6 +293,20 @@ const Navigation: React.FC = () => {
                         <span>Your Journey</span>
                       </button>
                       <button
+                        onClick={() => { navigate('/topics'); setProfileDropdownOpen(false); }}
+                        className="w-full flex items-center gap-3 px-4 py-2.5 text-left text-white/90 hover:bg-[#1C2433] transition-all duration-[180ms]"
+                      >
+                        <Compass className="w-4 h-4 text-white/50" />
+                        <span>Topics</span>
+                      </button>
+                      <button
+                        onClick={() => { navigate('/experts'); setProfileDropdownOpen(false); }}
+                        className="w-full flex items-center gap-3 px-4 py-2.5 text-left text-white/90 hover:bg-[#1C2433] transition-all duration-[180ms]"
+                      >
+                        <Users className="w-4 h-4 text-white/50" />
+                        <span>Experts</span>
+                      </button>
+                      <button
                         onClick={() => { navigate('/search'); setProfileDropdownOpen(false); }}
                         className="w-full flex items-center gap-3 px-4 py-2.5 text-left text-white/90 hover:bg-[#1C2433] transition-all duration-[180ms]"
                       >

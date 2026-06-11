@@ -36,12 +36,10 @@ export const EXPERT_PROFILES: Record<string, ExpertProfile> = {
   'Peter Thiel': {
     role: 'Co-founder, PayPal & Palantir',
     bio: 'Contrarian thinker on monopolies, competition, and going from zero to one.',
-    image: 'https://img.youtube.com/vi/rFV7wdEX-Mo/hqdefault.jpg',
   },
   'Michael Seibel': {
     role: 'Co-founder, Twitch · Partner, Y Combinator',
     bio: 'Plain-spoken guidance on MVPs, talking to users, and getting your first real traction.',
-    image: 'https://img.youtube.com/vi/C27RVio2rOs/hqdefault.jpg',
   },
   'Kevin Hale': {
     role: 'Co-founder, Wufoo · Partner, Y Combinator',

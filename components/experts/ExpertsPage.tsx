@@ -137,7 +137,7 @@ export const ExpertsPage: React.FC = () => {
                 <img
                   src={expert.image}
                   alt={expert.name}
-                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  className="absolute inset-0 w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent" />
                 <div className="absolute bottom-0 left-0 right-0 p-4">

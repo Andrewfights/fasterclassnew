@@ -8,6 +8,9 @@ import { ComingSoonSection } from './ComingSoonSection';
 import { CertificatesSection } from './CertificatesSection';
 import { CoursePreviewModal } from './CoursePreviewModal';
 import { COURSES, INITIAL_VIDEOS } from '../../constants';
+import { filterValidVideos } from '../../services/videoValidationService';
+import { getExperts } from '../../data/experts';
+import { FOUNDER_TOPICS } from '../../data/topics';
 import { HeroCarouselItem, Course, Video } from '../../types';
 
 // Featured experts for the landing page - using reliable hqdefault thumbnails
@@ -24,18 +27,6 @@ const FEATURED_INSTRUCTORS = [
   { name: 'Adora Cheung', role: 'YC Partner', image: 'https://img.youtube.com/vi/yP176MBG9Tk/hqdefault.jpg' },
 ];
 
-// Topics for browsing
-const TOPICS = [
-  { name: 'Ideation', icon: '💡', color: '#c9a227', count: 12 },
-  { name: 'Fundraising', icon: '💰', color: '#10B981', count: 18 },
-  { name: 'Product', icon: '🚀', color: '#8B5CF6', count: 15 },
-  { name: 'Growth', icon: '📈', color: '#3B82F6', count: 14 },
-  { name: 'Leadership', icon: '👑', color: '#EC4899', count: 10 },
-  { name: 'Marketing', icon: '📢', color: '#F97316', count: 11 },
-  { name: 'Sales', icon: '🤝', color: '#14B8A6', count: 9 },
-  { name: 'Hiring', icon: '👥', color: '#6366F1', count: 8 },
-];
-
 interface LandingPageProps {
   onSignIn: () => void;
   onGetStarted: () => void;
@@ -48,6 +39,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onSignIn, onGetStarted
     item: Course | Video | null;
     itemType: 'course' | 'video';
   }>({ isOpen: false, item: null, itemType: 'course' });
+
+  // Real expert faces for the hero grid (consistent with the in-app Experts pages)
+  const faces = getExperts(filterValidVideos(INITIAL_VIDEOS).filter(v => !v.isVertical)).slice(0, 9);
 
   // Hero carousel items for landing
   const heroCarouselItems: HeroCarouselItem[] = [
@@ -76,8 +70,68 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onSignIn, onGetStarted
       {/* Masterclass-Style Top Nav */}
       <LandingNav onSignIn={onSignIn} onGetStarted={onGetStarted} />
 
-      {/* Hero Carousel - with top padding for nav */}
-      <div className="pt-14">
+      {/* Bold MasterClass-style hero */}
+      <section className="relative pt-28 pb-16 md:pt-36 md:pb-24 px-6 md:px-8 overflow-hidden">
+        {/* Ambient glow */}
+        <div className="pointer-events-none absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full bg-[#c9a227]/10 blur-3xl" />
+        <div className="relative max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
+          {/* Copy */}
+          <div>
+            <span className="mc-label text-[#c9a227]">Signal, not noise</span>
+            <h1 className="mc-heading text-5xl md:text-6xl xl:text-7xl text-white mt-3 leading-[0.95]">
+              Learn from the<br />founders who've<br /><span className="text-[#c9a227]">done it.</span>
+            </h1>
+            <p className="mt-6 max-w-md text-lg text-[#a3a3a3]">
+              The best startup advice on the internet — curated from the biggest names
+              and organized into the paths that matter at every stage.
+            </p>
+            <div className="mt-8 flex flex-col sm:flex-row gap-3">
+              <button
+                onClick={onGetStarted}
+                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-[#c9a227] text-black font-bold rounded-md hover:bg-[#d4af37] transition-colors"
+              >
+                Get Started Free
+                <ArrowRight className="w-5 h-5" />
+              </button>
+              <button
+                onClick={onSignIn}
+                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-white/5 text-white font-semibold rounded-md border border-white/15 hover:bg-white/10 transition-colors"
+              >
+                Sign In
+              </button>
+            </div>
+            <p className="mt-5 text-sm text-[#737373]">
+              {INITIAL_VIDEOS.length}+ curated talks · {FOUNDER_TOPICS.length} topics · 100% free
+            </p>
+          </div>
+
+          {/* Faces grid */}
+          <div className="grid grid-cols-3 gap-3">
+            {faces.map((expert, i) => (
+              <button
+                key={expert.slug}
+                onClick={onGetStarted}
+                className={`group relative rounded-xl overflow-hidden border border-white/10 hover:border-white/30 transition-all ${
+                  i === 0 || i === 5 ? 'row-span-2 aspect-[3/4]' : 'aspect-square'
+                }`}
+              >
+                <img
+                  src={expert.image}
+                  alt={expert.name}
+                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 p-2.5">
+                  <p className="text-white text-xs font-semibold line-clamp-1">{expert.name}</p>
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Featured paths carousel */}
+      <div>
         <HeroCarousel
           items={heroCarouselItems}
           variant="landing"
@@ -124,18 +178,26 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onSignIn, onGetStarted
             </h2>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {TOPICS.map((topic, index) => (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            {FOUNDER_TOPICS.map((topic) => (
               <button
-                key={index}
+                key={topic.id}
                 onClick={onGetStarted}
-                className="group p-6 bg-[#141414] border border-[#2a2a2a] rounded-xl hover:border-[#c9a227]/50 transition-all text-left"
+                className="group relative aspect-[4/3] rounded-xl overflow-hidden border border-white/10 hover:border-white/30 transition-all text-left"
               >
-                <span className="text-4xl mb-3 block">{topic.icon}</span>
-                <h3 className="text-white font-semibold text-lg mb-1 group-hover:text-[#c9a227] transition-colors">
-                  {topic.name}
-                </h3>
-                <p className="text-[#737373] text-sm">{topic.count} lessons</p>
+                <img
+                  src={topic.cover}
+                  alt={topic.title}
+                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
+                <div
+                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  style={{ background: `linear-gradient(140deg, ${topic.accent}40, transparent 55%)` }}
+                />
+                <div className="absolute inset-0 p-3 flex flex-col justify-end">
+                  <h3 className="text-white font-bold text-sm leading-tight">{topic.title}</h3>
+                </div>
               </button>
             ))}
           </div>
