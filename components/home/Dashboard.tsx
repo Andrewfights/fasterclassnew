@@ -14,6 +14,7 @@ import { INITIAL_VIDEOS, COURSES, formatDuration } from '../../constants';
 import { filterValidVideos } from '../../services/videoValidationService';
 import { FOUNDER_TOPICS } from '../../data/topics';
 import { getExperts } from '../../data/experts';
+import { viewsLabel } from '../../data/metrics';
 import { HeroCarouselItem } from '../../types';
 import { HeroCarousel } from '../vod/HeroCarousel';
 
@@ -309,7 +310,9 @@ export const Dashboard: React.FC = () => {
                 <h3 className="text-xs sm:text-sm font-medium text-white line-clamp-2 group-hover:text-[#c9a227] transition-colors">
                   {video.title}
                 </h3>
-                <p className="text-xs text-[#6B7280] mt-0.5">{video.expert}</p>
+                <p className="text-xs text-[#6B7280] mt-0.5">
+                  {video.expert} · {viewsLabel(video.id)}
+                </p>
               </button>
             ))}
           </div>

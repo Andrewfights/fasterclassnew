@@ -4,6 +4,7 @@ import { ChevronLeft, Play, PlayCircle } from 'lucide-react';
 import { INITIAL_VIDEOS, formatDuration } from '../../constants';
 import { filterValidVideos } from '../../services/videoValidationService';
 import { getExperts, getExpertBySlug } from '../../data/experts';
+import { viewsLabel } from '../../data/metrics';
 
 export const ExpertsPage: React.FC = () => {
   const navigate = useNavigate();
@@ -106,6 +107,7 @@ export const ExpertsPage: React.FC = () => {
                 <h3 className="text-sm font-medium text-white line-clamp-2 group-hover:text-[#c9a227] transition-colors">
                   {video.title}
                 </h3>
+                <p className="text-xs text-[#6B7280] mt-0.5">{viewsLabel(video.id)}</p>
               </button>
             ))}
           </div>

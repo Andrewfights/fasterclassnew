@@ -4,6 +4,7 @@ import { ChevronLeft, ChevronRight, Play } from 'lucide-react';
 import { INITIAL_VIDEOS, formatDuration } from '../../constants';
 import { filterValidVideos } from '../../services/videoValidationService';
 import { FOUNDER_TOPICS, getTopicById, getTopicVideos } from '../../data/topics';
+import { viewsLabel } from '../../data/metrics';
 
 export const TopicsPage: React.FC = () => {
   const navigate = useNavigate();
@@ -92,7 +93,9 @@ export const TopicsPage: React.FC = () => {
                 <h3 className="text-sm font-medium text-white line-clamp-2 group-hover:text-[#c9a227] transition-colors">
                   {video.title}
                 </h3>
-                <p className="text-xs text-[#6B7280] mt-0.5">{video.expert}</p>
+                <p className="text-xs text-[#6B7280] mt-0.5">
+                  {video.expert} · {viewsLabel(video.id)}
+                </p>
               </button>
             ))}
           </div>

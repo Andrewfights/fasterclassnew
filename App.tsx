@@ -309,19 +309,6 @@ function App() {
                   <Route path="/learn/quiz/:quizId" element={<QuizPlayer />} />
                   <Route path="/learn/fill-blank" element={<FillBlankPage />} />
 
-                  {/* Admin - Legacy route */}
-                  <Route
-                    path="/admin-legacy"
-                    element={
-                      <ProtectedAdminPage
-                        videos={videos}
-                        playlists={playlists}
-                        setVideos={setVideos}
-                        setPlaylists={setPlaylists}
-                      />
-                    }
-                  />
-
                   {/* CMS Routes */}
                   <Route path="/admin" element={<ProtectedCMSLayout />}>
                     <Route index element={<CMSDashboard />} />
