@@ -151,8 +151,8 @@ export const TopicsPage: React.FC = () => {
                   <ChevronRight className="w-5 h-5 text-white/0 -translate-x-2 group-hover:text-white group-hover:translate-x-0 transition-all duration-300" />
                 </div>
                 <h2 className="mt-3 text-xl font-bold text-white">{topic.title}</h2>
-                {/* Blurb reveals on hover (roll-over feel from the brief) */}
-                <p className="text-sm text-white/70 max-h-0 opacity-0 group-hover:max-h-24 group-hover:opacity-100 group-hover:mt-1.5 overflow-hidden transition-all duration-300">
+                {/* Blurb: always visible on touch screens; hover-reveal on desktop (roll-over feel from the brief) */}
+                <p className="text-sm text-white/70 mt-1.5 overflow-hidden transition-all duration-300 lg:max-h-0 lg:opacity-0 lg:mt-0 lg:group-hover:max-h-24 lg:group-hover:opacity-100 lg:group-hover:mt-1.5">
                   {topic.blurb}
                 </p>
               </div>

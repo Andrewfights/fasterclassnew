@@ -187,7 +187,7 @@ export const HeroCarousel: React.FC<HeroCarouselProps> = ({
         <div
           className="absolute inset-0"
           style={{
-            background: 'radial-gradient(ellipse at center, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.7) 100%)'
+            background: 'radial-gradient(ellipse at center, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.78) 100%)'
           }}
         />
         {/* Bottom gradient for page blend */}

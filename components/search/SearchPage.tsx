@@ -213,7 +213,7 @@ export const SearchPage: React.FC = () => {
             type="text"
             value={query}
             onChange={(e) => handleSearch(e.target.value)}
-            placeholder="Search sessions, playbooks, live drops..."
+            placeholder="Search experts, topics, sessions…"
             className="w-full pl-12 pr-12 py-4 bg-[#1A1A24] border border-[#2E2E3E] rounded-xl text-white placeholder-[#6B7280] focus:outline-none focus:border-[#c9a227] transition-colors"
           />
           {query && (
@@ -268,7 +268,7 @@ export const SearchPage: React.FC = () => {
         ) : (
           <div className="text-center py-16">
             <Search className="w-16 h-16 text-[#2E2E3E] mx-auto mb-4" />
-            <p className="text-[#6B7280] mb-2">Hunt for sessions, playbooks, and live drops</p>
+            <p className="text-[#6B7280] mb-2">Search experts, topics, and curated sessions</p>
             <p className="text-sm text-[#4B5563]">Type to start your search</p>
           </div>
         )}
