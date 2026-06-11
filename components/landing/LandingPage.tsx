@@ -10,22 +10,9 @@ import { CoursePreviewModal } from './CoursePreviewModal';
 import { COURSES, INITIAL_VIDEOS } from '../../constants';
 import { filterValidVideos } from '../../services/videoValidationService';
 import { getExperts } from '../../data/experts';
+import { ExpertAvatar } from '../experts/ExpertAvatar';
 import { FOUNDER_TOPICS } from '../../data/topics';
 import { HeroCarouselItem, Course, Video } from '../../types';
-
-// Featured experts for the landing page - using reliable hqdefault thumbnails
-const FEATURED_INSTRUCTORS = [
-  { name: 'Sam Altman', role: 'Former YC President', image: 'https://img.youtube.com/vi/0lJKucu6HJc/hqdefault.jpg' },
-  { name: 'Naval Ravikant', role: 'AngelList Founder', image: 'https://img.youtube.com/vi/HiYo14wylQw/hqdefault.jpg' },
-  { name: 'Peter Thiel', role: 'PayPal Co-founder', image: 'https://img.youtube.com/vi/rFV7wdEX-Mo/hqdefault.jpg' },
-  { name: 'Kevin Hale', role: 'YC Partner', image: 'https://img.youtube.com/vi/DOtCl5PU8F0/hqdefault.jpg' },
-  { name: 'Dalton Caldwell', role: 'YC Partner', image: 'https://img.youtube.com/vi/8pNxKX1SUGE/hqdefault.jpg' },
-  { name: 'Y Combinator', role: 'Startup Accelerator', image: 'https://img.youtube.com/vi/CBYhVcO4WgI/hqdefault.jpg' },
-  { name: 'Paul Graham', role: 'YC Co-founder', image: 'https://img.youtube.com/vi/ii1jcLg-eIQ/hqdefault.jpg' },
-  { name: 'Michael Seibel', role: 'YC Partner', image: 'https://img.youtube.com/vi/C27RVio2rOs/hqdefault.jpg' },
-  { name: 'Gustaf Alströmer', role: 'YC Partner', image: 'https://img.youtube.com/vi/URiIsrdplbo/hqdefault.jpg' },
-  { name: 'Adora Cheung', role: 'YC Partner', image: 'https://img.youtube.com/vi/yP176MBG9Tk/hqdefault.jpg' },
-];
 
 interface LandingPageProps {
   onSignIn: () => void;
@@ -40,8 +27,11 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onSignIn, onGetStarted
     itemType: 'course' | 'video';
   }>({ isOpen: false, item: null, itemType: 'course' });
 
-  // Real expert faces for the hero grid (consistent with the in-app Experts pages)
-  const faces = getExperts(filterValidVideos(INITIAL_VIDEOS).filter(v => !v.isVertical)).slice(0, 9);
+  // Real expert faces for the hero grid + marquee (only those with real portraits)
+  const expertsWithPhotos = getExperts(filterValidVideos(INITIAL_VIDEOS).filter(v => !v.isVertical))
+    .filter(e => e.image);
+  const faces = expertsWithPhotos.slice(0, 9);
+  const marqueeInstructors = expertsWithPhotos.map(e => ({ name: e.name, role: e.role, image: e.image as string }));
 
   // Hero carousel items for landing
   const heroCarouselItems: HeroCarouselItem[] = [
@@ -115,10 +105,11 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onSignIn, onGetStarted
                   i === 0 || i === 5 ? 'row-span-2 aspect-[3/4]' : 'aspect-square'
                 }`}
               >
-                <img
-                  src={expert.image}
-                  alt={expert.name}
-                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                <ExpertAvatar
+                  name={expert.name}
+                  image={expert.image}
+                  className="absolute inset-0 group-hover:scale-105 transition-transform duration-500"
+                  initialsClass="text-4xl"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent" />
                 <div className="absolute bottom-0 left-0 right-0 p-2.5">
@@ -143,7 +134,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onSignIn, onGetStarted
 
       {/* Auto-Scrolling Instructor Marquee */}
       <InstructorMarquee
-        instructors={FEATURED_INSTRUCTORS}
+        instructors={marqueeInstructors}
         onInstructorClick={onGetStarted}
       />
 

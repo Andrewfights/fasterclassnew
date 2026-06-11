@@ -248,7 +248,7 @@ function App() {
           <Route path="*" element={
             <>
               <Navigation />
-              <main className="lg:pl-60">
+              <main className="lg:pl-60 pb-24 lg:pb-0">
                 <Routes>
                   {/* Home Dashboard */}
                   <Route path="/" element={<Dashboard />} />

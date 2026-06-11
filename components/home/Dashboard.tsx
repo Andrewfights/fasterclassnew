@@ -14,6 +14,7 @@ import { INITIAL_VIDEOS, COURSES, formatDuration } from '../../constants';
 import { filterValidVideos } from '../../services/videoValidationService';
 import { FOUNDER_TOPICS } from '../../data/topics';
 import { getExperts } from '../../data/experts';
+import { ExpertAvatar } from '../experts/ExpertAvatar';
 import { viewsLabel } from '../../data/metrics';
 import { HeroCarouselItem } from '../../types';
 import { HeroCarousel } from '../vod/HeroCarousel';
@@ -263,10 +264,11 @@ export const Dashboard: React.FC = () => {
                 className="group flex-shrink-0 w-36 text-left"
               >
                 <div className="relative aspect-[3/4] rounded-2xl overflow-hidden mb-2 border border-white/10 group-hover:border-white/30 transition-all duration-300">
-                  <img
-                    src={expert.image}
-                    alt={expert.name}
-                    className="absolute inset-0 w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                  <ExpertAvatar
+                    name={expert.name}
+                    image={expert.image}
+                    className="absolute inset-0 group-hover:scale-105 transition-transform duration-500"
+                    initialsClass="text-4xl"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
                 </div>

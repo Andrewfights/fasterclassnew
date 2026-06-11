@@ -5,6 +5,7 @@ import { INITIAL_VIDEOS, formatDuration } from '../../constants';
 import { filterValidVideos } from '../../services/videoValidationService';
 import { getExperts, getExpertBySlug } from '../../data/experts';
 import { viewsLabel } from '../../data/metrics';
+import { ExpertAvatar } from './ExpertAvatar';
 
 export const ExpertsPage: React.FC = () => {
   const navigate = useNavigate();
@@ -37,43 +38,44 @@ export const ExpertsPage: React.FC = () => {
     return (
       <div className="min-h-screen bg-[#0D0D12]">
         {/* Hero */}
-        <div className="relative pt-14 lg:pt-0">
-          <div className="relative min-h-[340px] md:min-h-[420px] flex items-end overflow-hidden">
-            {/* Background portrait */}
-            <img
-              src={activeExpert.image}
-              alt={activeExpert.name}
-              className="absolute inset-0 w-full h-full object-cover object-center opacity-40"
-            />
-            <div className="absolute inset-0 bg-gradient-to-r from-[#0D0D12] via-[#0D0D12]/85 to-[#0D0D12]/40" />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0D0D12] via-transparent to-transparent" />
+        <div className="relative pt-14 lg:pt-0 overflow-hidden">
+          {/* Ambient blurred backdrop */}
+          <ExpertAvatar
+            name={activeExpert.name}
+            image={activeExpert.image}
+            className="absolute inset-0 opacity-30 blur-2xl scale-125"
+            objectClass="object-center"
+            initialsClass="text-[160px]"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0D0D12] via-[#0D0D12]/80 to-[#0D0D12]/60" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0D0D12] via-transparent to-transparent" />
 
-            <div className="relative max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 pb-8 pt-20">
-              <Link
-                to="/experts"
-                className="inline-flex items-center gap-1 text-sm text-white/70 hover:text-white mb-6 transition-colors"
-              >
-                <ChevronLeft className="w-4 h-4" /> All Experts
-              </Link>
+          <div className="relative max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 pt-6 lg:pt-12 pb-8">
+            <Link
+              to="/experts"
+              className="inline-flex items-center gap-1 text-sm text-white/70 hover:text-white mb-6 transition-colors"
+            >
+              <ChevronLeft className="w-4 h-4" /> All Experts
+            </Link>
 
-              <div className="flex items-end gap-6">
-                {/* Portrait card */}
-                <div className="hidden sm:block w-32 h-32 md:w-40 md:h-40 rounded-2xl overflow-hidden border border-white/15 shadow-2xl shrink-0">
-                  <img src={activeExpert.image} alt={activeExpert.name} className="w-full h-full object-cover" />
-                </div>
-                <div className="min-w-0">
-                  <p className="mc-label text-[#c9a227] mb-2">Teaches Founders</p>
-                  <h1 className="mc-heading text-3xl md:text-5xl text-white">{activeExpert.name}</h1>
-                  <p className="mt-1 text-sm md:text-base text-white/60">{activeExpert.role}</p>
-                  <p className="mt-4 max-w-2xl text-sm md:text-base text-white/75 leading-relaxed">
-                    {activeExpert.bio}
-                  </p>
-                  <div className="mt-4 flex items-center gap-2 text-xs uppercase tracking-wider text-white/40">
-                    <PlayCircle className="w-4 h-4" />
-                    {activeExpert.videos.length} curated {activeExpert.videos.length === 1 ? 'video' : 'videos'}
-                  </div>
-                </div>
+            <div className="flex items-end gap-5">
+              {/* Portrait card */}
+              <div className="w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 rounded-2xl overflow-hidden border border-white/15 shadow-2xl shrink-0">
+                <ExpertAvatar name={activeExpert.name} image={activeExpert.image} initialsClass="text-4xl sm:text-5xl" />
               </div>
+              <div className="min-w-0 pb-1">
+                <p className="mc-label text-[#c9a227] mb-1.5">Teaches Founders</p>
+                <h1 className="mc-heading text-3xl md:text-5xl text-white leading-tight">{activeExpert.name}</h1>
+                <p className="mt-1 text-sm md:text-base text-white/60">{activeExpert.role}</p>
+              </div>
+            </div>
+
+            <p className="mt-5 max-w-2xl text-sm md:text-base text-white/75 leading-relaxed">
+              {activeExpert.bio}
+            </p>
+            <div className="mt-4 flex items-center gap-2 text-xs uppercase tracking-wider text-white/40">
+              <PlayCircle className="w-4 h-4" />
+              {activeExpert.videos.length} curated {activeExpert.videos.length === 1 ? 'video' : 'videos'}
             </div>
           </div>
         </div>
@@ -136,10 +138,11 @@ export const ExpertsPage: React.FC = () => {
               className="group text-left"
             >
               <div className="relative aspect-[3/4] rounded-2xl overflow-hidden border border-white/10 group-hover:border-white/30 transition-all duration-300">
-                <img
-                  src={expert.image}
-                  alt={expert.name}
-                  className="absolute inset-0 w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                <ExpertAvatar
+                  name={expert.name}
+                  image={expert.image}
+                  className="absolute inset-0 group-hover:scale-105 transition-transform duration-500"
+                  initialsClass="text-5xl"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent" />
                 <div className="absolute bottom-0 left-0 right-0 p-4">

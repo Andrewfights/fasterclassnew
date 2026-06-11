@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChevronRight, ChevronLeft, Film, Smartphone } from 'lucide-react';
-import { CategorySidebar, SidebarCategory } from '../shared/CategorySidebar';
+import { SidebarCategory } from '../shared/CategorySidebar';
 import { VOD_CATEGORIES, INITIAL_VIDEOS, formatDuration } from '../../constants';
 import { useLibrary } from '../../contexts/LibraryContext';
 import { Video, HeroCarouselItem } from '../../types';
@@ -95,21 +95,9 @@ export const VODPage: React.FC = () => {
   };
 
   return (
-    <div className="bg-[#0D0D12] pt-14">
-      <div className="flex">
-        {/* Left Sidebar - Desktop only */}
-        <div className="fixed left-0 top-14 bottom-0 z-40 hidden lg:block">
-          <CategorySidebar
-            categories={sidebarCategories}
-            selected={selectedCategory}
-            onSelect={setSelectedCategory}
-            title="Discover"
-            accentColor="#F5C518"
-          />
-        </div>
-
+    <div className="bg-[#0D0D12] pt-14 lg:pt-0 min-h-screen">
         {/* Main Content */}
-        <main className="flex-1 lg:ml-56 overflow-hidden">
+        <main>
           {/* Mobile Hero Carousel - Always show on mobile/tablet */}
           <div className="lg:hidden mb-4">
             <HeroCarousel
@@ -138,15 +126,20 @@ export const VODPage: React.FC = () => {
           </div>
 
           {/* Desktop Category Header with Format Toggle */}
-          <div className="hidden lg:block px-6 lg:px-8 pt-8 pb-4 max-w-7xl">
-            <div className="flex items-center justify-between mb-2">
+          <div className="hidden lg:block px-6 lg:px-8 pt-8 pb-2 max-w-7xl mx-auto">
+            <div className="flex items-center justify-between mb-5">
               <div className="flex items-center gap-3">
-                <span className="text-3xl">{selectedCategoryData?.icon}</span>
-                <h1 className="text-3xl font-bold text-white">{selectedCategoryData?.name}</h1>
+                <span className="text-2xl">{selectedCategoryData?.icon}</span>
+                <div>
+                  <h1 className="text-2xl font-bold text-white leading-tight">{selectedCategoryData?.name}</h1>
+                  {selectedCategoryData?.description && (
+                    <p className="text-sm text-[#9CA3AF]">{selectedCategoryData.description}</p>
+                  )}
+                </div>
               </div>
 
               {/* Content Format Toggle */}
-              <div className="flex items-center gap-2 bg-[#1E1E2E] rounded-xl p-1">
+              <div className="flex items-center gap-2 bg-[#1E1E2E] rounded-xl p-1 shrink-0">
                 <button
                   onClick={() => setContentFormat('long')}
                   className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all ${
@@ -171,14 +164,29 @@ export const VODPage: React.FC = () => {
                 </button>
               </div>
             </div>
-            {selectedCategoryData?.description && (
-              <p className="text-[#9CA3AF]">{selectedCategoryData.description}</p>
-            )}
+
+            {/* Category pills (replaces the old left filter sidebar) */}
+            <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide" style={{ scrollbarWidth: 'none' }}>
+              {sidebarCategories.filter(c => c.id !== 'continue' || c.count > 0).map(cat => (
+                <button
+                  key={cat.id}
+                  onClick={() => setSelectedCategory(cat.id)}
+                  className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-sm font-medium whitespace-nowrap border transition-colors ${
+                    selectedCategory === cat.id
+                      ? 'bg-[#F5C518] text-black border-[#F5C518]'
+                      : 'bg-transparent text-white/70 border-white/15 hover:border-white/40 hover:text-white'
+                  }`}
+                >
+                  <span>{cat.icon}</span>
+                  {cat.name}
+                </button>
+              ))}
+            </div>
           </div>
 
           {/* Desktop Hero Carousel for Featured */}
-          {selectedCategory === 'featured' && (
-            <div className="hidden lg:block mb-8 px-6 lg:px-8 max-w-7xl">
+          {selectedCategory === 'featured' && contentFormat === 'long' && (
+            <div className="hidden lg:block mt-6 mb-8 px-6 lg:px-8 max-w-7xl mx-auto">
               <div className="rounded-2xl overflow-hidden">
                 <HeroCarousel
                   items={selectedVideos.slice(0, 8).map(v => ({ type: 'video', item: v }))}
@@ -189,7 +197,7 @@ export const VODPage: React.FC = () => {
           )}
 
           {/* Video Grid */}
-          <div className="px-4 lg:px-8 pb-4 max-w-7xl">
+          <div className="px-4 lg:px-8 pt-6 pb-4 max-w-7xl mx-auto">
             {/* Desktop: Show based on selected category and format */}
             <div className="hidden lg:block">
               {/* Shorts Layout */}
@@ -384,7 +392,6 @@ export const VODPage: React.FC = () => {
             </div>
           </div>
         </main>
-      </div>
     </div>
   );
 };

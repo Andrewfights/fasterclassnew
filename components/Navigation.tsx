@@ -382,7 +382,6 @@ const Navigation: React.FC = () => {
                       <Icon className="w-5 h-5" />
                     </div>
                     <span className="text-[10px] font-semibold">{item.label}</span>
-                    <ChevronUp className={`w-3 h-3 transition-transform duration-[180ms] ${watchMenuOpen ? 'rotate-180' : ''}`} />
                   </button>
 
                   {/* Watch Menu Popup */}
@@ -442,8 +441,6 @@ const Navigation: React.FC = () => {
         </div>
       </nav>
 
-      {/* Spacer for mobile/tablet bottom nav */}
-      <div className="lg:hidden h-16" />
     </>
   );
 };

@@ -47,7 +47,7 @@ const AIGuide: React.FC<AIGuideProps> = ({ allVideos }) => {
     return (
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 right-6 p-4 bg-indigo-600 hover:bg-indigo-500 text-white rounded-full shadow-lg shadow-indigo-500/30 transition-all z-40 group"
+        className="fixed bottom-20 right-4 lg:bottom-6 lg:right-6 p-4 bg-indigo-600 hover:bg-indigo-500 text-white rounded-full shadow-lg shadow-indigo-500/30 transition-all z-40 group"
       >
         <Sparkles className="h-6 w-6 group-hover:scale-110 transition-transform" />
       </button>
@@ -55,7 +55,7 @@ const AIGuide: React.FC<AIGuideProps> = ({ allVideos }) => {
   }
 
   return (
-    <div className="fixed bottom-6 right-6 w-96 h-[500px] bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl z-50 flex flex-col overflow-hidden animate-in slide-in-from-bottom-10 fade-in duration-300">
+    <div className="fixed bottom-20 right-4 lg:bottom-6 lg:right-6 w-[calc(100vw-2rem)] max-w-96 h-[500px] max-h-[70vh] lg:max-h-[500px] bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl z-50 flex flex-col overflow-hidden animate-in slide-in-from-bottom-10 fade-in duration-300">
       {/* Header */}
       <div className="p-4 bg-slate-800 border-b border-slate-700 flex justify-between items-center">
         <div className="flex items-center space-x-2">
