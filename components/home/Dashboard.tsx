@@ -12,6 +12,7 @@ import { useLibrary } from '../../contexts/LibraryContext';
 import { gamificationService } from '../../services/gamificationService';
 import { INITIAL_VIDEOS, COURSES, formatDuration } from '../../constants';
 import { filterValidVideos } from '../../services/videoValidationService';
+import { FOUNDER_TOPICS } from '../../data/topics';
 import { HeroCarouselItem } from '../../types';
 import { HeroCarousel } from '../vod/HeroCarousel';
 
@@ -198,6 +199,42 @@ export const Dashboard: React.FC = () => {
             </button>
           </div>
         )}
+
+        {/* Browse by Topic */}
+        <section className="mb-10">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-semibold text-white">Browse by Topic</h2>
+            <Link
+              to="/topics"
+              className="text-sm text-[#c9a227] hover:text-[#d4af37] transition-colors flex items-center gap-1"
+            >
+              All Topics <ChevronRight className="w-4 h-4" />
+            </Link>
+          </div>
+          <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide" style={{ scrollbarWidth: 'none' }}>
+            {FOUNDER_TOPICS.map(topic => (
+              <button
+                key={topic.id}
+                onClick={() => navigate(`/topics/${topic.id}`)}
+                className="group relative flex-shrink-0 w-52 aspect-[4/3] rounded-xl overflow-hidden text-left border border-white/10 hover:border-white/30 transition-all duration-300"
+              >
+                <img
+                  src={topic.cover}
+                  alt={topic.title}
+                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
+                <div
+                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  style={{ background: `linear-gradient(140deg, ${topic.accent}40, transparent 55%)` }}
+                />
+                <div className="absolute inset-0 p-4 flex flex-col justify-end">
+                  <h3 className="text-base font-bold text-white">{topic.title}</h3>
+                </div>
+              </button>
+            ))}
+          </div>
+        </section>
 
         {/* Recommended Videos */}
         <section className="mb-10">

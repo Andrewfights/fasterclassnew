@@ -29,6 +29,9 @@ import { PlaylistDetailPage } from './components/streaming/PlaylistDetailPage';
 // VOD components
 import { VODPage } from './components/vod';
 
+// Topics catalogue
+import { TopicsPage } from './components/topics';
+
 // Details Page
 import { VideoDetailsPage } from './components/details/VideoDetailsPage';
 
@@ -269,6 +272,10 @@ function App() {
 
                   {/* On Demand (VOD) */}
                   <Route path="/vod" element={<VODPage />} />
+
+                  {/* Topics catalogue */}
+                  <Route path="/topics" element={<TopicsPage />} />
+                  <Route path="/topics/:topicId" element={<TopicsPage />} />
 
                   {/* Resources (Glossary) */}
                   <Route path="/resources" element={<ResourcesPage />} />

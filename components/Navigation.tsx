@@ -10,6 +10,7 @@ import {
   Bookmark,
   User,
   Gamepad2,
+  Compass,
   ChevronDown,
   LogOut,
   GraduationCap,
@@ -57,6 +58,7 @@ const Navigation: React.FC = () => {
   // Primary navigation (used by the desktop sidebar)
   const mainNav = [
     { path: '/', label: 'Home', icon: Home },
+    { path: '/topics', label: 'Topics', icon: Compass },
     { path: '/vod', label: 'Watch', icon: Play, matchAlso: '/watch' },
     { path: '/courses', label: 'Courses', icon: BookOpen, matchAlso: '/course' },
     { path: '/learn', label: 'Learn', icon: GraduationCap },
