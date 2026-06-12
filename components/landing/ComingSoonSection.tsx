@@ -19,14 +19,14 @@ const DEFAULT_COMING_SOON: ComingCourse[] = [
     id: 'ai-founders',
     title: 'AI for Startup Founders',
     description: 'Learn to leverage AI tools and LLMs to 10x your productivity and build smarter products.',
-    image: 'https://img.youtube.com/vi/zjkBMFhNj_g/maxresdefault.jpg',
-    releaseDate: 'Q2 2025',
+    image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1200',
+    releaseDate: 'Coming Soon',
   },
   {
     id: 'exit-playbook',
     title: 'The Exit Playbook',
     description: 'M&A strategies, IPO preparation, and strategic exits explained by founders who\'ve done it.',
-    image: 'https://img.youtube.com/vi/CBYhVcO4WgI/maxresdefault.jpg',
+    image: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=1200',
     releaseDate: 'Coming Soon',
   },
 ];

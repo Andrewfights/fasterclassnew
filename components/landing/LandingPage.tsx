@@ -5,7 +5,6 @@ import { HeroCarousel } from '../vod/HeroCarousel';
 import { InstructorMarquee } from './InstructorMarquee';
 import { PopularSection } from './PopularSection';
 import { ComingSoonSection } from './ComingSoonSection';
-import { CertificatesSection } from './CertificatesSection';
 import { CoursePreviewModal } from './CoursePreviewModal';
 import { COURSES, INITIAL_VIDEOS } from '../../constants';
 import { filterValidVideos } from '../../services/videoValidationService';
@@ -195,9 +194,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onSignIn, onGetStarted
         </div>
       </section>
 
-      {/* Certificates Section */}
-      <CertificatesSection onGetStarted={onGetStarted} />
-
       {/* How It Works Section */}
       <section className="py-20 px-6 md:px-8">
         <div className="max-w-7xl mx-auto">
@@ -233,9 +229,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onSignIn, onGetStarted
               <div className="w-20 h-20 bg-[#c9a227]/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
                 <span className="text-3xl font-display font-bold text-[#c9a227]">3</span>
               </div>
-              <h3 className="font-display text-xl font-bold text-white mb-3">Track Progress</h3>
+              <h3 className="font-display text-xl font-bold text-white mb-3">Go Deep</h3>
               <p className="text-[#a3a3a3]">
-                Earn XP, unlock achievements, and get certificates for completed courses.
+                Pick up where you left off, save your playbook, and lock in concepts with quick drills.
               </p>
             </div>
           </div>
