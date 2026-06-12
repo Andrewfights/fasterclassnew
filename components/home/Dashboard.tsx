@@ -229,7 +229,7 @@ export const Dashboard: React.FC = () => {
                 <img
                   src={topic.cover}
                   alt={topic.title}
-                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  className="kenburns absolute inset-0 w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
                 <div

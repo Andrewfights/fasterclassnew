@@ -5,6 +5,7 @@ import { HeroCarousel } from '../vod/HeroCarousel';
 import { InstructorMarquee } from './InstructorMarquee';
 import { PopularSection } from './PopularSection';
 import { ComingSoonSection } from './ComingSoonSection';
+import { NewsletterSignup } from './NewsletterSignup';
 import { CoursePreviewModal } from './CoursePreviewModal';
 import { COURSES, INITIAL_VIDEOS } from '../../constants';
 import { filterValidVideos } from '../../services/videoValidationService';
@@ -178,7 +179,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onSignIn, onGetStarted
                 <img
                   src={topic.cover}
                   alt={topic.title}
-                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  className="kenburns absolute inset-0 w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
                 <div
@@ -287,6 +288,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onSignIn, onGetStarted
           </p>
         </div>
       </section>
+
+      {/* Newsletter */}
+      <NewsletterSignup />
 
       {/* Footer */}
       <footer className="py-12 px-6 md:px-8 border-t border-[#2a2a2a]">

@@ -129,7 +129,7 @@ export const TopicsPage: React.FC = () => {
               <img
                 src={topic.cover}
                 alt={topic.title}
-                className="absolute inset-0 w-full h-full object-cover transition-transform duration-[600ms] ease-out group-hover:scale-110"
+                className="kenburns absolute inset-0 w-full h-full object-cover"
               />
               {/* Base gradient for legibility */}
               <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
