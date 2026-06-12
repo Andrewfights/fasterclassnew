@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { useParams, useNavigate, useSearchParams, useLocation } from 'react-router-dom';
-import { ArrowLeft, Plus, Check, Clock, User, RotateCcw, PictureInPicture2, AlertTriangle, SkipForward } from 'lucide-react';
+import { ArrowLeft, Plus, Check, Clock, User, RotateCcw, AlertTriangle, SkipForward } from 'lucide-react';
 import { INITIAL_VIDEOS, formatDuration, COURSES, getYoutubeId } from '../../constants';
 import { useLibrary } from '../../contexts/LibraryContext';
 import { usePiP } from '../../contexts/PiPContext';
@@ -13,32 +13,27 @@ export const WatchPage: React.FC = () => {
   const location = useLocation();
   const [searchParams] = useSearchParams();
   const { isVideoSaved, toggleSaveVideo, updateVideoProgress, getVideoProgress, markVideoCompleted } = useLibrary();
-  const { enablePiP, disablePiP, isActive: isPiPActive, video: pipVideo } = usePiP();
+  const { enablePiP, disablePiP } = usePiP();
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [watchFromStart, setWatchFromStart] = useState(false);
   const [videoError, setVideoError] = useState(false);
   const [errorRetryCount, setErrorRetryCount] = useState(0);
   const currentTimeRef = useRef<number>(0);
   const videoRef = useRef<typeof video>(null);
-  const isPiPActiveRef = useRef(false);
   const enablePiPRef = useRef(enablePiP);
 
   const video = INITIAL_VIDEOS.find(v => v.id === videoId);
 
   // Keep refs in sync
   videoRef.current = video;
-  isPiPActiveRef.current = isPiPActive;
   enablePiPRef.current = enablePiP;
   const saved = videoId ? isVideoSaved(videoId) : false;
   const progress = videoId ? getVideoProgress(videoId) : undefined;
 
-  // Only disable PiP if it's playing the SAME video (avoid duplicate playback)
-  // If PiP is playing a different video, let it continue
+  // Entering the full watch page: always kill the mini-player so only ONE YouTube
+  // player is ever active (fixes double-audio / double-play with PiP).
   useEffect(() => {
-    if (isPiPActive && pipVideo?.videoId === videoId) {
-      disablePiP();
-    }
-    // Only run on mount and when videoId changes
+    disablePiP();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [videoId]);
 
@@ -127,34 +122,17 @@ export const WatchPage: React.FC = () => {
     }
   }, [videoId, updateVideoProgress]);
 
-  // Handle enabling PiP before navigation
-  const handleEnablePiP = useCallback(() => {
-    if (video && !isPiPActive) {
-      enablePiP({
-        videoId: video.id,
-        embedUrl: video.embedUrl,
-        title: video.title,
-        expert: video.expert,
-        thumbnail: video.thumbnail,
-        duration: video.duration,
-        startTime: resumeTime,
-        isLive: false,
-      });
-    }
-  }, [video, resumeTime, enablePiP, isPiPActive]);
-
-  // Handle back navigation with PiP option
+  // Handle back navigation
   const handleBack = useCallback(() => {
     navigate(-1);
   }, [navigate]);
 
-  // Auto-enable PiP when navigating away from watch page
+  // Auto-enable PiP when navigating away from the watch page (continue in mini player).
+  // The full-page iframe is unmounting here, so only the PiP player remains — no double play.
   useEffect(() => {
     return () => {
-      // On unmount (navigation away), enable PiP if we have a video and PiP isn't already active
-      // Use refs to get current values at cleanup time
       const currentVideo = videoRef.current;
-      if (currentVideo && !isPiPActiveRef.current) {
+      if (currentVideo) {
         enablePiPRef.current({
           videoId: currentVideo.id,
           embedUrl: currentVideo.embedUrl,
@@ -206,17 +184,6 @@ export const WatchPage: React.FC = () => {
           >
             <ArrowLeft className="w-5 h-5" />
           </button>
-
-          {/* PiP Button */}
-          {!isPiPActive && (
-            <button
-              onClick={handleEnablePiP}
-              className="absolute top-4 right-4 z-10 p-2 rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors"
-              title="Continue in mini player"
-            >
-              <PictureInPicture2 className="w-5 h-5" />
-            </button>
-          )}
 
           {videoError ? (
             <div className="absolute inset-0 flex items-center justify-center bg-[#1A1A24]">
