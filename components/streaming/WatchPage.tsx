@@ -174,9 +174,9 @@ export const WatchPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-[#0D0D12]">
       {/* Video Player Section */}
-      <div className="pt-16 bg-black relative">
-        {/* Video Player - Paused when PiP is active */}
-        <div className="relative w-full max-w-6xl mx-auto aspect-video bg-black">
+      <div className="pt-14 lg:pt-0 bg-black relative">
+        {/* Video Player */}
+        <div className="relative w-full max-w-6xl mx-auto aspect-video bg-black lg:mt-6 lg:rounded-2xl lg:overflow-hidden lg:border lg:border-white/10">
           {/* Back Button */}
           <button
             onClick={handleBack}

@@ -1,6 +1,9 @@
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Gamepad2, Trophy, Clock, Target, Zap, BookOpen, TrendingUp, Lock, DollarSign, Scale, Mic, Flame, Briefcase, Users, Lightbulb, BarChart3, Rocket, Building2 } from 'lucide-react';
+import {
+  Gamepad2, Clock, ArrowRight, Lock,
+  BookOpen, TrendingUp, DollarSign, Scale, Mic, Flame, Briefcase, Users, BarChart3, Rocket,
+} from 'lucide-react';
 import { TerminologySprint } from './TerminologySprint';
 import { MetricMatch } from './MetricMatch';
 import { ValuationGuesstimate } from './ValuationGuesstimate';
@@ -9,128 +12,39 @@ import { PitchTank } from './PitchTank';
 import { BurnRateBlitz } from './BurnRateBlitz';
 import { DealNegotiator } from './DealNegotiator';
 
-// Placeholder leaderboard data
-const LEADERBOARD = [
-  { rank: 1, name: 'StartupPro', score: 12450, emoji: '1' },
-  { rank: 2, name: 'VCHunter', score: 11200, emoji: '2' },
-  { rank: 3, name: 'FounderX', score: 10890, emoji: '3' },
-  { rank: 4, name: 'TechWiz', score: 9500, emoji: '' },
-  { rank: 5, name: 'GrowthHacker', score: 8700, emoji: '' },
-];
+interface GameDef {
+  id: string;
+  title: string;
+  description: string;
+  icon: React.FC<{ className?: string; style?: React.CSSProperties }>;
+  color: string;
+  category: 'quick' | 'challenge';
+  duration: string;
+}
 
-const GAMES = [
-  {
-    id: 'terminology-sprint',
-    title: 'Terminology Sprint',
-    description: 'Match startup terms to definitions as fast as you can',
-    icon: BookOpen,
-    color: '#c9a227',
-    category: 'quick',
-    duration: '1 min',
-    available: true,
-  },
-  {
-    id: 'metric-match',
-    title: 'Metric Match',
-    description: 'Identify the right startup metrics from values',
-    icon: TrendingUp,
-    color: '#22C55E',
-    category: 'quick',
-    duration: '1 min',
-    available: true,
-  },
-  {
-    id: 'valuation-guesstimate',
-    title: 'Valuation Guesstimate',
-    description: 'Guess startup valuations from their profiles',
-    icon: DollarSign,
-    color: '#22C55E',
-    category: 'challenge',
-    duration: '5 min',
-    available: true,
-  },
-  {
-    id: 'founders-dilemma',
-    title: "Founder's Dilemma",
-    description: 'Make tough decisions in realistic startup scenarios',
-    icon: Scale,
-    color: '#c9a227',
-    category: 'challenge',
-    duration: '5 min',
-    available: true,
-  },
-  {
-    id: 'pitch-tank',
-    title: 'Pitch Tank',
-    description: 'Build a compelling pitch and get scored on completeness',
-    icon: Mic,
-    color: '#FF6B6B',
-    category: 'challenge',
-    duration: '10 min',
-    available: true,
-  },
-  {
-    id: 'burn-rate-blitz',
-    title: 'Burn Rate Blitz',
-    description: 'Manage runway with tough financial decisions',
-    icon: Flame,
-    color: '#FF9600',
-    category: 'challenge',
-    duration: '3 min',
-    available: true,
-  },
-  {
-    id: 'deal-negotiator',
-    title: 'Deal Negotiator',
-    description: 'Shark Tank style - negotiate funding terms with VCs',
-    icon: Briefcase,
-    color: '#3B82F6',
-    category: 'challenge',
-    duration: '8 min',
-    available: true,
-  },
-  {
-    id: 'team-builder',
-    title: 'Team Builder',
-    description: 'Hire and manage your founding team wisely',
-    icon: Users,
-    color: '#8B5CF6',
-    category: 'challenge',
-    duration: '5 min',
-    available: true,
-  },
-  {
-    id: 'market-analyzer',
-    title: 'Market Analyzer',
-    description: 'Analyze TAM, SAM, SOM for startup ideas',
-    icon: BarChart3,
-    color: '#14B8A6',
-    category: 'quick',
-    duration: '2 min',
-    available: true,
-  },
-  {
-    id: 'product-pivot',
-    title: 'Product Pivot',
-    description: 'Know when to pivot vs persevere with your idea',
-    icon: Rocket,
-    color: '#EC4899',
-    category: 'challenge',
-    duration: '5 min',
-    available: true,
-  },
+const GAMES: GameDef[] = [
+  { id: 'terminology-sprint', title: 'Terminology Sprint', description: 'Match startup terms to definitions as fast as you can.', icon: BookOpen, color: '#c9a227', category: 'quick', duration: '1 min' },
+  { id: 'metric-match', title: 'Metric Match', description: 'Identify the right startup metrics from their values.', icon: TrendingUp, color: '#22C55E', category: 'quick', duration: '1 min' },
+  { id: 'market-analyzer', title: 'Market Analyzer', description: 'Size up TAM, SAM, and SOM for startup ideas.', icon: BarChart3, color: '#14B8A6', category: 'quick', duration: '2 min' },
+  { id: 'valuation-guesstimate', title: 'Valuation Guesstimate', description: 'Guess startup valuations from their profiles.', icon: DollarSign, color: '#22C55E', category: 'challenge', duration: '5 min' },
+  { id: 'founders-dilemma', title: "Founder's Dilemma", description: 'Make tough calls in realistic startup scenarios.', icon: Scale, color: '#c9a227', category: 'challenge', duration: '5 min' },
+  { id: 'pitch-tank', title: 'Pitch Tank', description: 'Build a compelling pitch and get scored on completeness.', icon: Mic, color: '#FF6B6B', category: 'challenge', duration: '10 min' },
+  { id: 'burn-rate-blitz', title: 'Burn Rate Blitz', description: 'Manage runway with tough financial decisions.', icon: Flame, color: '#FF9600', category: 'challenge', duration: '3 min' },
+  { id: 'deal-negotiator', title: 'Deal Negotiator', description: 'Shark-Tank style — negotiate funding terms with VCs.', icon: Briefcase, color: '#3B82F6', category: 'challenge', duration: '8 min' },
+  { id: 'team-builder', title: 'Team Builder', description: 'Hire and manage your founding team wisely.', icon: Users, color: '#8B5CF6', category: 'challenge', duration: '5 min' },
+  { id: 'product-pivot', title: 'Product Pivot', description: 'Know when to pivot vs. persevere with your idea.', icon: Rocket, color: '#EC4899', category: 'challenge', duration: '5 min' },
 ];
 
 const COMING_SOON = [
   { title: 'Talk to Users', description: 'User interview simulator' },
   { title: 'Cap Table Crunch', description: 'Equity dilution calculator' },
-  { title: 'Competitor Analysis', description: 'Find weaknesses in competitors' },
-  { title: 'Investor Pitch', description: 'Practice your 60 second pitch' },
+  { title: 'Investor Pitch', description: 'Practice your 60-second pitch' },
   { title: 'Growth Hacker', description: 'Choose the right growth channels' },
   { title: 'Legal Landmines', description: 'Navigate startup legal issues' },
+  { title: 'Competitor Analysis', description: 'Find weaknesses in competitors' },
 ];
 
-// Game component map
+// Only these games are actually implemented and playable.
 const GAME_COMPONENTS: Record<string, React.FC> = {
   'terminology-sprint': TerminologySprint,
   'metric-match': MetricMatch,
@@ -141,41 +55,70 @@ const GAME_COMPONENTS: Record<string, React.FC> = {
   'deal-negotiator': DealNegotiator,
 };
 
+const isPlayable = (id: string) => Boolean(GAME_COMPONENTS[id]);
+
+const GameCard: React.FC<{ game: GameDef; onClick: () => void }> = ({ game, onClick }) => {
+  const Icon = game.icon;
+  return (
+    <button
+      onClick={onClick}
+      className="group relative bg-[#13131A] rounded-2xl border border-white/10 hover:border-white/25 hover:-translate-y-0.5 transition-all duration-200 p-5 text-left"
+    >
+      <div className="flex items-start gap-4">
+        <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0" style={{ backgroundColor: game.color + '22' }}>
+          <Icon className="w-6 h-6" style={{ color: game.color }} />
+        </div>
+        <div className="flex-1 min-w-0">
+          <h3 className="font-semibold text-white group-hover:text-[#c9a227] transition-colors">{game.title}</h3>
+          <p className="text-sm text-[#9CA3AF] mt-1 line-clamp-2">{game.description}</p>
+        </div>
+      </div>
+      <div className="mt-4 flex items-center justify-between">
+        <span
+          className="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full"
+          style={{ backgroundColor: game.color + '18', color: game.color }}
+        >
+          <Clock className="w-3 h-3" /> {game.duration}
+        </span>
+        <span className="inline-flex items-center gap-1 text-xs font-medium text-white/40 group-hover:text-white transition-colors">
+          Play <ArrowRight className="w-3.5 h-3.5 -translate-x-1 group-hover:translate-x-0 transition-transform" />
+        </span>
+      </div>
+    </button>
+  );
+};
+
 export const GamesPage: React.FC = () => {
   const navigate = useNavigate();
   const { gameId } = useParams<{ gameId?: string }>();
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
+  }, [gameId]);
 
-  // If a specific game is selected, render that game
+  // Render a specific playable game
   if (gameId && GAME_COMPONENTS[gameId]) {
     const GameComponent = GAME_COMPONENTS[gameId];
     return <GameComponent />;
   }
 
-  // If game doesn't exist yet, show coming soon
+  // Unimplemented game id → coming soon
   if (gameId) {
     const game = GAMES.find(g => g.id === gameId);
     return (
-      <div className="min-h-screen bg-[#0D0D12] pt-14">
-        <div className="max-w-2xl mx-auto px-6 py-8 text-center">
-          <div className="bg-[#1A1A24] rounded-2xl border border-[#2E2E3E] p-8">
-            <div className="w-20 h-20 rounded-2xl bg-[#c9a227]/20 flex items-center justify-center mx-auto mb-6">
+      <div className="min-h-screen bg-[#0D0D12] pt-20 lg:pt-12">
+        <div className="max-w-2xl mx-auto px-6 text-center">
+          <div className="bg-[#13131A] rounded-2xl border border-white/10 p-8">
+            <div className="w-20 h-20 rounded-2xl bg-[#c9a227]/15 flex items-center justify-center mx-auto mb-6">
               <Lock className="w-10 h-10 text-[#c9a227]" />
             </div>
-            <h1 className="text-2xl font-bold text-white mb-3">
-              {game?.title || 'Game'} Coming Soon
-            </h1>
-            <p className="text-[#9CA3AF] mb-6">
-              This game is still in development. Check back soon!
-            </p>
+            <h1 className="mc-heading text-2xl text-white mb-3">{game?.title || 'This game'} is coming soon</h1>
+            <p className="text-[#9CA3AF] mb-6">We're still building this one. Check back soon.</p>
             <button
               onClick={() => navigate('/games')}
-              className="px-6 py-3 bg-[#c9a227] text-white font-semibold rounded-xl hover:bg-[#d4af37] transition-colors"
+              className="px-6 py-3 bg-[#c9a227] text-black font-semibold rounded-xl hover:bg-[#d4af37] transition-colors"
             >
-              Back to Challenges
+              Back to Games
             </button>
           </div>
         </div>
@@ -183,204 +126,65 @@ export const GamesPage: React.FC = () => {
     );
   }
 
-  const quickGames = GAMES.filter(g => g.category === 'quick');
-  const challenges = GAMES.filter(g => g.category === 'challenge');
+  const quickGames = GAMES.filter(g => g.category === 'quick' && isPlayable(g.id));
+  const challenges = GAMES.filter(g => g.category === 'challenge' && isPlayable(g.id));
+  const upcomingGames = GAMES.filter(g => !isPlayable(g.id));
 
   return (
-    <div className="min-h-screen bg-[#0D0D12] pt-14">
-      <div className="max-w-6xl mx-auto px-6 py-8">
+    <div className="min-h-screen bg-[#0D0D12]">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 lg:pt-12 pb-12">
         {/* Header */}
-        <div className="flex items-center gap-3 mb-8">
-          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#c9a227] to-[#a88520] flex items-center justify-center">
-            <Gamepad2 className="w-6 h-6 text-white" />
-          </div>
-          <div>
-            <h1 className="text-2xl font-bold text-white">Challenges</h1>
-            <p className="text-[#9CA3AF] text-sm">Train your founder instincts</p>
-          </div>
+        <div className="mb-8">
+          <h1 className="mc-heading text-3xl md:text-4xl text-white">Games</h1>
+          <p className="mt-2 max-w-2xl text-sm md:text-base text-white/50">
+            Sharpen your founder instincts — quick drills to lock in the fundamentals,
+            and deeper challenges that simulate the real decisions.
+          </p>
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-8">
-          {/* Main Content */}
-          <div className="lg:col-span-2 space-y-8">
-            {/* Quick Games */}
-            <section>
-              <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                <Clock className="w-5 h-5 text-[#c9a227]" />
-                Quick Drills
-              </h2>
-              <div className="grid sm:grid-cols-2 gap-4">
-                {quickGames.map(game => {
-                  const Icon = game.icon;
-                  return (
-                    <button
-                      key={game.id}
-                      onClick={() => navigate(`/games/${game.id}`)}
-                      className="p-5 bg-[#1A1A24] rounded-xl border border-[#2E2E3E] hover:border-[#c9a227]/50 transition-all text-left group"
-                    >
-                      <div className="flex items-start gap-4">
-                        <div
-                          className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
-                          style={{ backgroundColor: game.color + '20' }}
-                        >
-                          <Icon className="w-6 h-6" style={{ color: game.color }} />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <h3 className="font-semibold text-white group-hover:text-[#c9a227] transition-colors">
-                            {game.title}
-                          </h3>
-                          <p className="text-sm text-[#9CA3AF] mt-1 line-clamp-2">
-                            {game.description}
-                          </p>
-                          <div className="flex items-center gap-2 mt-2 text-xs text-[#6B7280]">
-                            <Clock className="w-3 h-3" />
-                            <span>{game.duration}</span>
-                          </div>
-                        </div>
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
-            </section>
-
-            {/* Challenges */}
-            <section>
-              <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                <Target className="w-5 h-5 text-[#F5C518]" />
-                Challenges
-              </h2>
-              <div className="grid sm:grid-cols-2 gap-4">
-                {challenges.map(game => {
-                  const Icon = game.icon;
-                  return (
-                    <button
-                      key={game.id}
-                      onClick={() => navigate(`/games/${game.id}`)}
-                      className="p-5 bg-[#1A1A24] rounded-xl border border-[#2E2E3E] hover:border-[#F5C518]/50 transition-all text-left group"
-                    >
-                      <div className="flex items-start gap-4">
-                        <div
-                          className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
-                          style={{ backgroundColor: game.color + '20' }}
-                        >
-                          <Icon className="w-6 h-6" style={{ color: game.color }} />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <h3 className="font-semibold text-white group-hover:text-[#F5C518] transition-colors">
-                            {game.title}
-                          </h3>
-                          <p className="text-sm text-[#9CA3AF] mt-1 line-clamp-2">
-                            {game.description}
-                          </p>
-                          <div className="flex items-center gap-2 mt-2 text-xs text-[#6B7280]">
-                            <Clock className="w-3 h-3" />
-                            <span>{game.duration}</span>
-                          </div>
-                        </div>
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
-            </section>
-
-            {/* Coming Soon */}
-            <section>
-              <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                <Lock className="w-5 h-5 text-[#6B7280]" />
-                Coming Soon
-              </h2>
-              <div className="grid sm:grid-cols-3 gap-4">
-                {COMING_SOON.map(game => (
-                  <div
-                    key={game.title}
-                    className="p-4 bg-[#1A1A24]/50 rounded-xl border border-[#2E2E3E]/50 opacity-60"
-                  >
-                    <h3 className="font-medium text-white/60">{game.title}</h3>
-                    <p className="text-xs text-[#6B7280] mt-1">{game.description}</p>
-                  </div>
-                ))}
-              </div>
-            </section>
+        {/* Quick Drills */}
+        <section className="mb-10">
+          <div className="flex items-center gap-2 mb-4">
+            <Clock className="w-5 h-5 text-[#c9a227]" />
+            <h2 className="text-lg font-semibold text-white">Quick Drills</h2>
+            <span className="text-xs text-white/30">· under 2 minutes</span>
           </div>
-
-          {/* Leaderboard Sidebar */}
-          <div className="lg:col-span-1">
-            <div className="sticky top-20">
-              <div className="bg-[#1A1A24] rounded-xl border border-[#2E2E3E] overflow-hidden">
-                <div className="px-5 py-4 border-b border-[#2E2E3E] flex items-center justify-between">
-                  <h2 className="font-semibold text-white flex items-center gap-2">
-                    <Trophy className="w-5 h-5 text-[#F5C518]" />
-                    Leaderboard
-                  </h2>
-                  <span className="text-xs text-[#6B7280]">This Week</span>
-                </div>
-                <div className="divide-y divide-[#2E2E3E]">
-                  {LEADERBOARD.map((entry) => (
-                    <div
-                      key={entry.rank}
-                      className={`px-5 py-3 flex items-center gap-3 ${
-                        entry.rank <= 3 ? 'bg-[#F5C518]/5' : ''
-                      }`}
-                    >
-                      <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
-                        entry.rank === 1 ? 'bg-[#F5C518] text-black' :
-                        entry.rank === 2 ? 'bg-[#C0C0C0] text-black' :
-                        entry.rank === 3 ? 'bg-[#CD7F32] text-white' :
-                        'bg-[#2E2E3E] text-[#9CA3AF]'
-                      }`}>
-                        {entry.rank}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="font-medium text-white truncate">{entry.name}</p>
-                      </div>
-                      <div className="text-sm font-semibold text-[#F5C518]">
-                        {entry.score.toLocaleString()}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <div className="px-5 py-3 border-t border-[#2E2E3E] bg-[#0D0D12]/50">
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-[#c9a227] flex items-center justify-center text-sm font-bold text-white">
-                      15
-                    </div>
-                    <div className="flex-1">
-                      <p className="font-medium text-white">You</p>
-                    </div>
-                    <div className="text-sm font-semibold text-[#9CA3AF]">
-                      2,340
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Stats Card */}
-              <div className="mt-4 p-5 bg-[#1A1A24] rounded-xl border border-[#2E2E3E]">
-                <h3 className="font-semibold text-white mb-4">Your Stats</h3>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <p className="text-2xl font-bold text-[#c9a227]">12</p>
-                    <p className="text-xs text-[#6B7280]">Challenges Crushed</p>
-                  </div>
-                  <div>
-                    <p className="text-2xl font-bold text-[#22C55E]">85%</p>
-                    <p className="text-xs text-[#6B7280]">Avg. Score</p>
-                  </div>
-                  <div>
-                    <p className="text-2xl font-bold text-[#F5C518]">3</p>
-                    <p className="text-xs text-[#6B7280]">Grind Streak</p>
-                  </div>
-                  <div>
-                    <p className="text-2xl font-bold text-white">2,340</p>
-                    <p className="text-xs text-[#6B7280]">Total HP</p>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {quickGames.map(game => (
+              <GameCard key={game.id} game={game} onClick={() => navigate(`/games/${game.id}`)} />
+            ))}
           </div>
-        </div>
+        </section>
+
+        {/* Challenges */}
+        <section className="mb-10">
+          <div className="flex items-center gap-2 mb-4">
+            <Gamepad2 className="w-5 h-5 text-[#F5C518]" />
+            <h2 className="text-lg font-semibold text-white">Challenges</h2>
+            <span className="text-xs text-white/30">· scenario simulations</span>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {challenges.map(game => (
+              <GameCard key={game.id} game={game} onClick={() => navigate(`/games/${game.id}`)} />
+            ))}
+          </div>
+        </section>
+
+        {/* Coming Soon */}
+        <section>
+          <div className="flex items-center gap-2 mb-4">
+            <Lock className="w-4 h-4 text-white/40" />
+            <h2 className="text-sm font-semibold uppercase tracking-wider text-white/40">Coming Soon</h2>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+            {[...upcomingGames.map(g => ({ title: g.title, description: g.description })), ...COMING_SOON].map(game => (
+              <div key={game.title} className="rounded-xl border border-white/5 bg-white/[0.02] px-4 py-3">
+                <h3 className="text-sm font-medium text-white/70">{game.title}</h3>
+                <p className="text-xs text-[#6B7280] mt-0.5 line-clamp-1">{game.description}</p>
+              </div>
+            ))}
+          </div>
+        </section>
       </div>
     </div>
   );
