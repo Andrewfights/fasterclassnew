@@ -48,13 +48,11 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     return () => mediaQuery.removeEventListener('change', handler);
   }, []);
 
-  // Calculate effective theme
-  const effectiveTheme = useMemo(() => {
-    if (preferences.theme === 'system') {
-      return systemTheme;
-    }
-    return preferences.theme;
-  }, [preferences.theme, systemTheme]);
+  // Light theme is not yet implemented across the app (components use a dark palette),
+  // so the product is locked to its premium dark look. The toggle UI has been removed;
+  // this keeps rendering consistent even if a stale 'light'/'system' preference is stored.
+  const effectiveTheme = 'dark' as 'light' | 'dark';
+  void systemTheme;
 
   // Apply theme to document
   useEffect(() => {

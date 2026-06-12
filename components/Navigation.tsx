@@ -18,20 +18,15 @@ import {
   MonitorPlay,
   ChevronUp,
   Clapperboard,
-  Sun,
-  Moon,
-  Monitor,
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useGamification } from '../contexts/GamificationContext';
-import { useTheme } from '../contexts/ThemeContext';
 
 const Navigation: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { authState, logout } = useAuth();
   const { level, levelDefinition } = useGamification();
-  const { preferences, setTheme } = useTheme();
   const currentPath = location.pathname;
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const [watchMenuOpen, setWatchMenuOpen] = useState(false);
@@ -82,11 +77,6 @@ const Navigation: React.FC = () => {
     { path: '/learn', label: 'Learn', icon: GraduationCap, matchAlso: '/learn' },
   ];
 
-  const themeOptions = [
-    { value: 'light' as const, label: 'Light', icon: Sun },
-    { value: 'dark' as const, label: 'Dark', icon: Moon },
-    { value: 'system' as const, label: 'Auto', icon: Monitor },
-  ];
 
   const renderSidebarLink = (item: { path: string; label: string; icon: any; matchAlso?: string }) => {
     const Icon = item.icon;
@@ -131,26 +121,8 @@ const Navigation: React.FC = () => {
           </div>
         </nav>
 
-        {/* Bottom: theme toggle + profile */}
-        <div className="px-3 py-4 border-t border-white/5 space-y-3 shrink-0">
-          {/* Light / Dark / Auto toggle */}
-          <div className="flex items-center gap-1 p-1 bg-white/5 rounded-lg">
-            {themeOptions.map(({ value, label, icon: Icon }) => (
-              <button
-                key={value}
-                onClick={() => setTheme(value)}
-                className={`flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-md text-xs font-medium transition-all duration-[180ms] ${
-                  preferences.theme === value
-                    ? 'bg-white/10 text-white'
-                    : 'text-white/50 hover:text-white/80'
-                }`}
-                title={label}
-              >
-                <Icon className="w-3.5 h-3.5" />
-                <span>{label}</span>
-              </button>
-            ))}
-          </div>
+        {/* Bottom: profile */}
+        <div className="px-3 py-4 border-t border-white/5 shrink-0">
 
           {/* Profile row */}
           <div className="relative" ref={dropdownRef}>
@@ -260,26 +232,6 @@ const Navigation: React.FC = () => {
                           <p className="font-semibold text-white">{levelDefinition.title}</p>
                           <p className="text-xs text-white/50">Level {level}</p>
                         </div>
-                      </div>
-                    </div>
-
-                    {/* Theme toggle */}
-                    <div className="px-3 py-3 border-b border-white/10">
-                      <div className="flex items-center gap-1 p-1 bg-white/5 rounded-lg">
-                        {themeOptions.map(({ value, label, icon: Icon }) => (
-                          <button
-                            key={value}
-                            onClick={() => setTheme(value)}
-                            className={`flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-md text-xs font-medium transition-all duration-[180ms] ${
-                              preferences.theme === value
-                                ? 'bg-white/10 text-white'
-                                : 'text-white/50 hover:text-white/80'
-                            }`}
-                          >
-                            <Icon className="w-3.5 h-3.5" />
-                            <span>{label}</span>
-                          </button>
-                        ))}
                       </div>
                     </div>
 

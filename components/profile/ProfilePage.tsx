@@ -9,10 +9,6 @@ import {
   BookOpen,
   Calendar,
   TrendingUp,
-  Sun,
-  Moon,
-  Monitor,
-  Palette,
   Camera,
   Building2,
   Upload,
@@ -23,20 +19,17 @@ import {
   X,
 } from 'lucide-react';
 import { useGamification } from '../../contexts/GamificationContext';
-import { useTheme } from '../../contexts/ThemeContext';
 import { useAuth } from '../../contexts/AuthContext';
 import { gamificationService } from '../../services/gamificationService';
 import { profileService } from '../../services/profileService';
 import { ACHIEVEMENTS, LEARNING_MODULES } from '../../constants';
 import { Card } from '../ui/Card';
 import { ProgressBar, ProgressRing } from '../ui/ProgressRing';
-import { ThemeMode } from '../../services/preferencesService';
 import { UserProfile } from '../../types';
 
 export const ProfilePage: React.FC = () => {
   const navigate = useNavigate();
   const { progress, level, levelDefinition, xpProgress } = useGamification();
-  const { preferences, setTheme, isDark } = useTheme();
   const { authState } = useAuth();
   const stats = gamificationService.getStats();
 
@@ -122,11 +115,6 @@ export const ProfilePage: React.FC = () => {
   // Get checklist progress
   const checklistProgress = profileService.getChecklistProgress(userEmail);
 
-  const themeOptions: { value: ThemeMode; label: string; icon: React.ReactNode }[] = [
-    { value: 'light', label: 'Light', icon: <Sun className="w-5 h-5" /> },
-    { value: 'dark', label: 'Dark', icon: <Moon className="w-5 h-5" /> },
-    { value: 'system', label: 'System', icon: <Monitor className="w-5 h-5" /> },
-  ];
 
   // Get recent activity (last 7 days)
   const recentActivity = progress.activityHistory.slice(-7);
@@ -518,42 +506,6 @@ export const ProfilePage: React.FC = () => {
             </div>
           </Card>
         </div>
-
-        {/* Appearance Settings */}
-        <Card className="mt-8">
-          <h3 className="text-lg font-bold text-[var(--color-text-primary)] mb-4 flex items-center gap-2">
-            <Palette className="w-5 h-5" />
-            Appearance
-          </h3>
-
-          <div className="space-y-4">
-            <div>
-              <label className="text-sm text-[var(--color-text-secondary)] mb-3 block">
-                Theme
-              </label>
-              <div className="flex gap-3">
-                {themeOptions.map((option) => (
-                  <button
-                    key={option.value}
-                    onClick={() => setTheme(option.value)}
-                    className={`
-                      flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl
-                      transition-all duration-[180ms] ease-[cubic-bezier(.22,.61,.36,1)]
-                      border-2
-                      ${preferences.theme === option.value
-                        ? 'border-[var(--color-accent)] bg-[var(--color-accent)]/10 text-[var(--color-accent)]'
-                        : 'border-[var(--color-border-strong)] bg-[var(--color-bg-secondary)] text-[var(--color-text-secondary)] hover:border-[var(--color-accent)]/50'
-                      }
-                    `}
-                  >
-                    {option.icon}
-                    <span className="font-semibold">{option.label}</span>
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        </Card>
 
         {/* Recent Milestones */}
         <Card className="mt-8">
