@@ -86,10 +86,18 @@ export const CourseCard: React.FC<CourseCardProps> = ({ course, size = 'medium' 
       </div>
 
       {/* Info */}
-      <h3 className="text-white font-semibold text-sm leading-tight mb-1 group-hover:text-[#8B5CF6] transition-colors">
+      <h3
+        className="text-white font-semibold text-sm leading-tight mb-1 group-hover:text-[#8B5CF6] transition-colors"
+        style={{ display: '-webkit-box', WebkitLineClamp: 1, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}
+      >
         {course.title}
       </h3>
-      <p className="text-[#6B7280] text-xs line-clamp-2">{course.description}</p>
+      <p
+        className="text-[#9CA3AF] text-xs"
+        style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}
+      >
+        {course.description}
+      </p>
     </div>
   );
 };

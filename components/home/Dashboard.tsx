@@ -4,7 +4,6 @@ import {
   Play,
   ChevronRight,
   BookOpen,
-  Smartphone,
   Rocket,
 } from 'lucide-react';
 import { useGamification } from '../../contexts/GamificationContext';
@@ -323,10 +322,7 @@ export const Dashboard: React.FC = () => {
         {/* Shorts Section */}
         <section className="mb-10">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-white flex items-center gap-2">
-              <Smartphone className="w-5 h-5 text-[#FF0000]" />
-              Quick Hits
-            </h2>
+            <h2 className="text-lg font-semibold text-white">Quick Hits</h2>
             <Link
               to="/vod"
               className="text-sm text-[#c9a227] hover:text-[#d4af37] transition-colors flex items-center gap-1"
@@ -351,9 +347,6 @@ export const Dashboard: React.FC = () => {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                   <div className="absolute bottom-2 right-2 px-1.5 py-0.5 bg-black/70 rounded text-[10px] text-white">
                     {formatDuration(video.duration)}
-                  </div>
-                  <div className="absolute top-2 left-2 p-1.5 bg-[#FF0000]/90 rounded-full">
-                    <Smartphone className="w-3 h-3 text-white" />
                   </div>
                   <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                     <div className="w-10 h-10 rounded-full bg-white/90 flex items-center justify-center">

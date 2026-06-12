@@ -4,8 +4,7 @@ import { ChevronRight, ChevronLeft, Film, Smartphone } from 'lucide-react';
 import { SidebarCategory } from '../shared/CategorySidebar';
 import { VOD_CATEGORIES, INITIAL_VIDEOS, formatDuration } from '../../constants';
 import { useLibrary } from '../../contexts/LibraryContext';
-import { Video, HeroCarouselItem } from '../../types';
-import { HeroCarousel } from './HeroCarousel';
+import { Video } from '../../types';
 import { filterValidVideos } from '../../services/videoValidationService';
 
 type ContentFormat = 'long' | 'short';
@@ -30,6 +29,26 @@ export const VODPage: React.FC = () => {
   // Get shorts for the shorts section
   const shortsVideos = useMemo(() => {
     return validVideos.filter(v => v.isVertical === true || v.duration <= 120);
+  }, [validVideos]);
+
+  // Featured rows with cross-row dedup so the same video never heads multiple rows
+  const featuredRows = useMemo(() => {
+    const used = new Set<string>();
+    const nonVertical = validVideos.filter(v => !v.isVertical);
+    const take = (pool: Video[], n = 10): Video[] => {
+      const out: Video[] = [];
+      for (const v of pool) {
+        if (out.length >= n) break;
+        if (!used.has(v.id)) { used.add(v.id); out.push(v); }
+      }
+      return out;
+    };
+    return {
+      popular: take(nonVertical),
+      yc: take(nonVertical.filter(v => v.tags.includes('y-combinator'))),
+      mindset: take(nonVertical.filter(v => v.tags.includes('mindset') || v.tags.includes('inspiration'))),
+      deep: take(nonVertical.filter(v => v.duration >= 1800)),
+    };
   }, [validVideos]);
 
   // Helper to calculate progress percentage
@@ -98,14 +117,6 @@ export const VODPage: React.FC = () => {
     <div className="bg-[#0D0D12] pt-14 lg:pt-0 min-h-screen">
         {/* Main Content */}
         <main>
-          {/* Mobile Hero Carousel - Always show on mobile/tablet */}
-          <div className="lg:hidden mb-4">
-            <HeroCarousel
-              items={validVideos.filter(v => !v.isVertical).slice(0, 8).map(v => ({ type: 'video', item: v }))}
-              size="compact"
-            />
-          </div>
-
           {/* Mobile Category Pills - Scroll to sections */}
           <div className="lg:hidden sticky top-14 z-20 bg-[#0D0D12] px-4 py-3 overflow-x-auto border-b border-[#1E1E2E]" style={{ scrollbarWidth: 'none' }}>
             <div className="flex gap-2">
@@ -184,18 +195,6 @@ export const VODPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Desktop Hero Carousel for Featured */}
-          {selectedCategory === 'featured' && contentFormat === 'long' && (
-            <div className="hidden lg:block mt-6 mb-8 px-6 lg:px-8 max-w-7xl mx-auto">
-              <div className="rounded-2xl overflow-hidden">
-                <HeroCarousel
-                  items={selectedVideos.slice(0, 8).map(v => ({ type: 'video', item: v }))}
-                  size="compact"
-                />
-              </div>
-            </div>
-          )}
-
           {/* Video Grid */}
           <div className="px-4 lg:px-8 pt-6 pb-4 max-w-7xl mx-auto">
             {/* Desktop: Show based on selected category and format */}
@@ -236,10 +235,10 @@ export const VODPage: React.FC = () => {
                       getProgressPercent={getProgressPercent}
                     />
                   )}
-                  <ContentRowSection title="Most Popular" videos={validVideos.filter(v => !v.isVertical).slice(0, 10)} onVideoClick={(v) => navigate(`/watch/${v.id}`)} getProgressPercent={getProgressPercent} />
-                  <ContentRowSection title="YC Startup School" videos={validVideos.filter(v => v.tags.includes('y-combinator')).slice(0, 10)} onVideoClick={(v) => navigate(`/watch/${v.id}`)} getProgressPercent={getProgressPercent} />
-                  <ContentRowSection title="Founder Mindset" videos={validVideos.filter(v => v.tags.includes('mindset') || v.tags.includes('inspiration')).slice(0, 10)} onVideoClick={(v) => navigate(`/watch/${v.id}`)} getProgressPercent={getProgressPercent} />
-                  <ContentRowSection title="Deep Dives" videos={validVideos.filter(v => v.duration >= 1800).slice(0, 10)} onVideoClick={(v) => navigate(`/watch/${v.id}`)} getProgressPercent={getProgressPercent} />
+                  <ContentRowSection title="Most Popular" videos={featuredRows.popular} onVideoClick={(v) => navigate(`/watch/${v.id}`)} getProgressPercent={getProgressPercent} />
+                  {featuredRows.yc.length > 0 && <ContentRowSection title="YC Startup School" videos={featuredRows.yc} onVideoClick={(v) => navigate(`/watch/${v.id}`)} getProgressPercent={getProgressPercent} />}
+                  {featuredRows.mindset.length > 0 && <ContentRowSection title="Founder Mindset" videos={featuredRows.mindset} onVideoClick={(v) => navigate(`/watch/${v.id}`)} getProgressPercent={getProgressPercent} />}
+                  {featuredRows.deep.length > 0 && <ContentRowSection title="Deep Dives" videos={featuredRows.deep} onVideoClick={(v) => navigate(`/watch/${v.id}`)} getProgressPercent={getProgressPercent} />}
                 </div>
               )}
             </div>
