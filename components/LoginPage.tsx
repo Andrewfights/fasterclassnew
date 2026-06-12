@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { Zap, Lock, Mail, AlertCircle, Loader2, ArrowLeft, User } from 'lucide-react';
+import { newsletterService } from '../services/newsletterService';
+import { Zap, Lock, Mail, AlertCircle, Loader2, ArrowLeft, User, Check } from 'lucide-react';
 
 interface LoginPageProps {
   onLoginSuccess: () => void;
@@ -14,6 +15,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess, onBack, initialMo
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [displayName, setDisplayName] = useState('');
+  const [newsletter, setNewsletter] = useState(true);
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -27,6 +29,9 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess, onBack, initialMo
       result = await login({ email, password });
     } else {
       result = await signup(email, password, displayName);
+      if (result.success && newsletter) {
+        newsletterService.subscribe(email);
+      }
     }
 
     if (result.success) {
@@ -137,6 +142,25 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess, onBack, initialMo
                 />
               </div>
             </div>
+
+            {mode === 'signup' && (
+              <button
+                type="button"
+                onClick={() => setNewsletter(!newsletter)}
+                className="flex items-center gap-3 text-left w-full group"
+              >
+                <span
+                  className={`w-5 h-5 rounded-md border flex items-center justify-center flex-shrink-0 transition-colors ${
+                    newsletter ? 'bg-[#c9a227] border-[#c9a227]' : 'border-[#3a3a3a] group-hover:border-[#525252]'
+                  }`}
+                >
+                  {newsletter && <Check className="w-3.5 h-3.5 text-black" strokeWidth={3} />}
+                </span>
+                <span className="text-sm text-[#a3a3a3]">
+                  Send me <span className="text-white">The Drop</span> — one curated founder lesson a week.
+                </span>
+              </button>
+            )}
 
             <button
               type="submit"

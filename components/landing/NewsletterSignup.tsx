@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { ArrowRight, Check } from 'lucide-react';
-
-const STORAGE_KEY = 'fasterclass_newsletter';
+import { newsletterService } from '../../services/newsletterService';
 
 interface NewsletterSignupProps {
   /** Visual density: 'section' for the full landing band, 'inline' for compact use. */
@@ -19,16 +18,7 @@ export const NewsletterSignup: React.FC<NewsletterSignupProps> = ({ variant = 's
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const value = email.trim();
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return;
-    try {
-      const existing: string[] = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-      if (!existing.includes(value)) {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify([...existing, value]));
-      }
-    } catch {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify([value]));
-    }
+    if (!newsletterService.subscribe(email)) return;
     setSubscribed(true);
   };
 
