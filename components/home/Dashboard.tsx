@@ -89,18 +89,13 @@ export const Dashboard: React.FC = () => {
     return 'Time to build';
   }, []);
 
-  // Hero carousel items - mix of courses and videos
-  const heroCarouselItems: HeroCarouselItem[] = useMemo(() => {
-    const longFormVideos = validVideos.filter(v => !v.isVertical && v.duration > 300);
-    return [
-      { type: 'course', item: COURSES[0] },
-      ...(longFormVideos[0] ? [{ type: 'video' as const, item: longFormVideos[0] }] : []),
-      { type: 'course', item: COURSES[1] },
-      ...(longFormVideos[4] ? [{ type: 'video' as const, item: longFormVideos[4] }] : []),
-      { type: 'course', item: COURSES[2] },
-      ...(longFormVideos[8] ? [{ type: 'video' as const, item: longFormVideos[8] }] : []),
-    ].filter(Boolean);
-  }, [validVideos]);
+  // Hero carousel items — courses only. Course hero art is purpose-built (clean title
+  // treatment), unlike YouTube video thumbnails that bake the title into the image and
+  // clash with the overlaid title.
+  const heroCarouselItems: HeroCarouselItem[] = useMemo(
+    () => COURSES.slice(0, 6).map(c => ({ type: 'course' as const, item: c })),
+    []
+  );
 
   // Handle company creation
   const handleCreateCompany = (name: string, description: string, industry: 'saas' | 'consumer' | 'marketplace' | 'fintech' | 'healthtech' | 'other') => {
