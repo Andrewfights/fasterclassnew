@@ -28,11 +28,9 @@ modules behind the same interfaces — mechanical, not a rewrite.
 - **YouTube Data API** (in an Edge Function) to auto-fill video metadata on curation.
 - **Resend / Beehiiv** (optional) for the newsletter; or just a Supabase table to start.
 
-## ⚠️ Security issue to fix before any real launch
-
-The Gemini API key is currently compiled **into the client bundle** (`vite.config.ts` injects
-`process.env.API_KEY`). Anyone can read it from the shipped JS. The AI Guide must call Gemini
-through a server-side proxy (Supabase Edge Function) so the key stays secret.
+> Note: the app currently requires **no API keys** (the optional Gemini "AI Guide" was removed
+> to keep the surface clean and key-free). If an AI feature is ever wanted, add it behind a
+> server-side proxy so no key ships to the client.
 
 ## The MVP — smallest version that gets real users
 
@@ -55,7 +53,6 @@ through a server-side proxy (Supabase Edge Function) so the key stays secret.
 - **YouTube Data API Edge Function**: paste a URL → auto-fill title, duration, channel→expert,
   tags suggestions (today title/expert are typed by hand).
 - **Newsletter**: wire the existing capture to a `newsletter_subscribers` table or ESP.
-- **Gemini proxy**: move the key server-side (fixes the security issue above).
 
 ### Step 4 — Ship
 - Deploy SPA (Vercel) + Supabase; custom domain; basic analytics.

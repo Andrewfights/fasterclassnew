@@ -1,20 +1,21 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# Fasterclass
 
-# Run and deploy your AI Studio app
+Signal, not noise — a curated learning platform for founders. The best startup advice on the
+internet, organized by topic and by the biggest names in the game.
 
-This contains everything you need to run your app locally.
+## Run locally
 
-View your app in AI Studio: https://ai.studio/apps/drive/1-h4Kn8OssXYt5QfJP86SEdTqqvCY3oON
+**Prerequisites:** Node.js
 
-## Run Locally
+1. Install dependencies: `npm install`
+2. Run the app: `npm run dev`
 
-**Prerequisites:**  Node.js
+No API keys or environment variables are required.
 
+## Deploy
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+Push to GitHub (private repo recommended) and import into Vercel. It auto-detects Vite
+(`vite build` → `dist`); `vercel.json` handles SPA routing. No env vars needed.
+
+See [PHASE2.md](PHASE2.md) for the plan to make it production-ready (real backend, auth,
+shared content).

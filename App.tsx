@@ -4,7 +4,6 @@ import Navigation from './components/Navigation';
 import { Video, Playlist } from './types';
 import AdminPanel from './components/AdminPanel';
 import VideoPlayer from './components/VideoPlayer';
-import AIGuide from './components/AIGuide';
 import LoginPage from './components/LoginPage';
 import { useAuth } from './contexts/AuthContext';
 import { LibraryProvider } from './contexts/LibraryContext';
@@ -334,7 +333,6 @@ function App() {
                   </Route>
                 </Routes>
               </main>
-              <AIGuide allVideos={videos} />
             </>
           } />
         </Routes>
