@@ -360,7 +360,7 @@ export const gamificationService = {
 
       switch (achievement.condition.type) {
         case 'first_video':
-          unlocked = Object.values(progress.videoProgress).some(v => v.watched);
+          unlocked = Object.values(progress.videoProgress).some((v: VideoProgress) => v.watched);
           break;
         case 'first_quiz':
           unlocked = progress.quizAttempts.length > 0;
@@ -369,7 +369,7 @@ export const gamificationService = {
           unlocked = progress.quizAttempts.some(a => a.score === 100);
           break;
         case 'videos_watched':
-          unlocked = Object.values(progress.videoProgress).filter(v => v.watched).length >= achievement.condition.value;
+          unlocked = Object.values(progress.videoProgress).filter((v: VideoProgress) => v.watched).length >= achievement.condition.value;
           break;
         case 'streak_days':
           unlocked = progress.currentStreak >= achievement.condition.value;
@@ -388,7 +388,7 @@ export const gamificationService = {
           }
           break;
         case 'flashcards_mastered':
-          unlocked = Object.values(progress.flashcardProgress).filter(f => f.masteryLevel >= 4).length >= achievement.condition.value;
+          unlocked = Object.values(progress.flashcardProgress).filter((f: FlashcardProgress) => f.masteryLevel >= 4).length >= achievement.condition.value;
           break;
       }
 
@@ -420,7 +420,7 @@ export const gamificationService = {
       level: progress.level,
       currentStreak: progress.currentStreak,
       longestStreak: progress.longestStreak,
-      videosWatched: Object.values(progress.videoProgress).filter(v => v.watched).length,
+      videosWatched: Object.values(progress.videoProgress).filter((v: VideoProgress) => v.watched).length,
       quizzesTaken: progress.quizAttempts.length,
       quizzesPassed: progress.quizAttempts.filter(a => a.passed).length,
       averageQuizScore: progress.quizAttempts.length > 0

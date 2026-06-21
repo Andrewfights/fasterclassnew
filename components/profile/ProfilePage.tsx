@@ -533,7 +533,7 @@ export const ProfilePage: React.FC = () => {
                     <span className="text-2xl">{achievement.icon}</span>
                     <div>
                       <div className="font-semibold text-[var(--color-text-primary)] text-sm">
-                        {achievement.title}
+                        {achievement.name}
                       </div>
                       <div className="text-xs text-[var(--color-text-secondary)]">
                         {new Date(userAchievement.unlockedAt).toLocaleDateString()}

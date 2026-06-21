@@ -1,19 +1,12 @@
-import { FastChannel, Video } from '../types';
+import { FastChannel, Video, ScheduleBlock } from '../types';
 import { FAST_CHANNELS, INITIAL_VIDEOS } from '../constants';
+
+// Re-export the canonical ScheduleBlock so existing importers keep working.
+export type { ScheduleBlock };
 
 // ============================================
 // TYPES
 // ============================================
-
-export interface ScheduleBlock {
-  id: string;
-  channelId: string;
-  videoId: string;
-  video: Video;
-  startTime: number;    // Unix timestamp (seconds)
-  endTime: number;      // Unix timestamp (seconds)
-  isCustom?: boolean;   // True if manually scheduled
-}
 
 export interface ChannelScheduleConfig {
   channelId: string;

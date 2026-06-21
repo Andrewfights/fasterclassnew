@@ -435,6 +435,7 @@ export interface ScheduleBlock {
   id: string;
   channelId: string;
   videoId: string;
+  video?: Video;        // Hydrated video, when available (e.g. timeline/editor views)
   startTime: number;    // Unix timestamp (seconds)
   endTime: number;      // Unix timestamp (seconds)
   isCustom?: boolean;   // True if manually scheduled

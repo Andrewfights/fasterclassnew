@@ -31,7 +31,9 @@ export interface CMSScheduleBlock extends ScheduleBlock {
 }
 
 // Extended Episode with CMS capabilities
-export interface CMSEpisode extends Omit<Episode, 'clips'> {
+// createdAt/updatedAt are stored as ISO strings in the CMS layer (see cmsDataService),
+// so they're omitted from the base Episode (which uses numeric timestamps) and redeclared.
+export interface CMSEpisode extends Omit<Episode, 'clips' | 'createdAt' | 'updatedAt'> {
   channelIds: string[];
   clips: CMSClip[];
   artwork: {

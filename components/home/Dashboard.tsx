@@ -29,7 +29,6 @@ export const Dashboard: React.FC = () => {
     progress,
     founderJourney,
     gameSessions,
-    hasCompany,
     createCompany,
   } = useGamification();
   const { continueWatching } = useLibrary();
@@ -40,12 +39,9 @@ export const Dashboard: React.FC = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    // Show create company modal for first-time users after a brief delay
-    if (!hasCompany) {
-      const timer = setTimeout(() => setShowCreateCompany(true), 1000);
-      return () => clearTimeout(timer);
-    }
-  }, [hasCompany]);
+    // Note: we intentionally do NOT auto-open the create-company modal for new users.
+    // Company creation is opt-in via the "Start Your Journey" button below.
+  }, []);
 
   // Get all valid videos
   const validVideos = useMemo(() => filterValidVideos(INITIAL_VIDEOS), []);

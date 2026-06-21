@@ -8,13 +8,7 @@ interface LiveTVProps {
   videos: Video[];
 }
 
-// Global Youtube API declaration
-declare global {
-  interface Window {
-    YT: any;
-    onYouTubeIframeAPIReady: () => void;
-  }
-}
+// YouTube IFrame API global types live in types/youtube.d.ts.
 
 const LiveTV: React.FC<LiveTVProps> = ({ channels, videos }) => {
   const [activeChannelId, setActiveChannelId] = useState(channels[0].id);

@@ -10,12 +10,7 @@ interface VideoPlayerProps {
   onBack: () => void;
 }
 
-declare global {
-  interface Window {
-    YT: any;
-    onYouTubeIframeAPIReady: () => void;
-  }
-}
+// YouTube IFrame API global types live in types/youtube.d.ts.
 
 const STORAGE_KEY = 'fasterclass_video_progress';
 
