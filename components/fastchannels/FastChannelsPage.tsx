@@ -211,7 +211,7 @@ export const FastChannelsPage: React.FC = () => {
     if (!schedule) return '';
     const videoId = getYoutubeId(schedule.currentVideo.url);
     const startTime = Math.floor(schedule.startOffset);
-    return `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=${isMuted ? 1 : 0}&start=${startTime}&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&enablejsapi=1`;
+    return `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=${isMuted ? 1 : 0}&start=${startTime}&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&playsinline=1&enablejsapi=1`;
   };
 
   return (

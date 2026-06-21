@@ -149,7 +149,7 @@ export const VerticalFeed: React.FC = () => {
     const videoId = video.embedUrl.split('/').pop()?.split('?')[0];
     const autoplay = isPlaying ? '1' : '0';
     const mute = isMuted ? '1' : '0';
-    return `https://www.youtube.com/embed/${videoId}?autoplay=${autoplay}&mute=${mute}&loop=1&playlist=${videoId}&controls=0&modestbranding=1&rel=0&playsinline=1`;
+    return `https://www.youtube.com/embed/${videoId}?autoplay=${autoplay}&mute=${mute}&loop=1&playlist=${videoId}&controls=0&modestbranding=1&rel=0&playsinline=1&iv_load_policy=3`;
   }, [isPlaying, isMuted]);
 
   if (filteredVideos.length === 0) {

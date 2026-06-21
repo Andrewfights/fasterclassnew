@@ -190,7 +190,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ playlist, initialVideoIndex, 
                   <div key={currentVideo.id} id="youtube-player-container" className="w-full h-full" />
                 ) : (
                   <iframe
-                    src={`${currentVideo.embedUrl}?autoplay=1&rel=0&modestbranding=1`}
+                    src={`${currentVideo.embedUrl}?autoplay=1&rel=0&modestbranding=1&iv_load_policy=3&playsinline=1`}
                     title={currentVideo.title}
                     className="w-full h-full"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -205,7 +205,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ playlist, initialVideoIndex, 
                   <div key={currentVideo.id} id="youtube-player-container" className="w-full h-full" />
                 ) : (
                   <iframe
-                    src={`${currentVideo.embedUrl}?autoplay=1&rel=0&modestbranding=1`}
+                    src={`${currentVideo.embedUrl}?autoplay=1&rel=0&modestbranding=1&iv_load_policy=3&playsinline=1`}
                     title={currentVideo.title}
                     className="w-full h-full"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

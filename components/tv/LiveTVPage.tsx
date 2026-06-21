@@ -431,7 +431,7 @@ export const LiveTVPage: React.FC = () => {
     // Use dvrStartOffset if set (restart mode), otherwise use live position
     const startTime = dvrStartOffset !== null ? dvrStartOffset : initialStartOffset;
     // Note: mute is controlled via postMessage API to avoid iframe reload
-    return `https://www.youtube.com/embed/${videoId}?autoplay=1&start=${startTime}&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&enablejsapi=1&origin=${window.location.origin}`;
+    return `https://www.youtube.com/embed/${videoId}?autoplay=1&start=${startTime}&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&playsinline=1&enablejsapi=1&origin=${window.location.origin}`;
   }, [currentVideoId, initialStartOffset, dvrStartOffset, schedule?.currentVideo?.url]);
 
   const progress = schedule

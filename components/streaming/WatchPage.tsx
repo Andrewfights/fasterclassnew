@@ -27,6 +27,8 @@ export const WatchPage: React.FC = () => {
   const [upNext, setUpNext] = useState<typeof video>(null);
   const [countdown, setCountdown] = useState(5);
   const handleEndedRef = useRef<() => void>(() => {});
+  const durationRef = useRef(0);
+  const advanceFiredRef = useRef(false); // one-shot guard for end / early-advance
   const videoRef = useRef<typeof video>(null);
   const enablePiPRef = useRef(enablePiP);
 
@@ -109,6 +111,9 @@ export const WatchPage: React.FC = () => {
       try {
         const data = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
         const info = data?.info;
+        if (info && typeof info.duration === 'number' && info.duration > 0) {
+          durationRef.current = info.duration;
+        }
         // Current time — keep a ref for PiP handoff and bump state only when the
         // whole second changes (drives chapter highlighting without 60fps renders).
         if (info && typeof info.currentTime === 'number') {
@@ -117,9 +122,15 @@ export const WatchPage: React.FC = () => {
             currentTimeRef.current = secs;
             setCurrentTime(secs);
           }
+          // Early-advance ~5s before the end so YouTube's end-screen / Subscribe
+          // cards never get a chance to render. Fires once per video.
+          const dur = durationRef.current;
+          if (dur > 30 && secs >= dur - 5 && !advanceFiredRef.current) {
+            advanceFiredRef.current = true;
+            handleEndedRef.current?.();
+          }
         }
-        // Player state — 0 (ENDED) drives autoplay-next. Comes via infoDelivery
-        // (info.playerState) or onStateChange (info is the state number).
+        // Player state — 0 (ENDED) is the fallback trigger if early-advance didn't fire.
         const state =
           info && typeof info.playerState === 'number'
             ? info.playerState
@@ -129,8 +140,10 @@ export const WatchPage: React.FC = () => {
         if (typeof state === 'number') {
           const prev = playerStateRef.current;
           playerStateRef.current = state;
-          // 0 = ENDED — fire once on the transition into the ended state.
-          if (state === 0 && prev !== 0) handleEndedRef.current?.();
+          if (state === 0 && prev !== 0 && !advanceFiredRef.current) {
+            advanceFiredRef.current = true;
+            handleEndedRef.current?.();
+          }
         }
       } catch {
         // Not a JSON message, ignore
@@ -238,9 +251,11 @@ export const WatchPage: React.FC = () => {
     return () => clearTimeout(t);
   }, [upNext, countdown, contextQuery, navigate]);
 
-  // Clear any pending Up-Next card when the video changes.
+  // Clear any pending Up-Next card and reset end-of-video guards when the video changes.
   useEffect(() => {
     setUpNext(null);
+    durationRef.current = 0;
+    advanceFiredRef.current = false;
   }, [videoId]);
 
 
@@ -346,7 +361,7 @@ export const WatchPage: React.FC = () => {
             <iframe
               ref={iframeRef}
               key={`${videoId}-${watchFromStart}-${errorRetryCount}`}
-              src={`${video.embedUrl}?autoplay=1&rel=0&start=${resumeTime}&enablejsapi=1&origin=${window.location.origin}`}
+              src={`${video.embedUrl}?autoplay=1&rel=0&modestbranding=1&iv_load_policy=3&playsinline=1&start=${resumeTime}&enablejsapi=1&origin=${window.location.origin}`}
               title={video.title}
               className="w-full h-full"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
