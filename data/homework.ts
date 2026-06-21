@@ -31,7 +31,7 @@ export const HOMEWORK_ASSIGNMENTS: HomeworkAssignment[] = [
         isRequired: false,
       },
     ],
-    dueAfterModule: 'module-ideation',
+    dueAfterModule: 'course-1-module-3',
     xpReward: 100,
   },
   {
@@ -64,7 +64,7 @@ export const HOMEWORK_ASSIGNMENTS: HomeworkAssignment[] = [
         isRequired: false,
       },
     ],
-    dueAfterModule: 'module-prototype',
+    dueAfterModule: 'course-2-module-2',
     xpReward: 150,
   },
   {
@@ -97,7 +97,7 @@ export const HOMEWORK_ASSIGNMENTS: HomeworkAssignment[] = [
         isRequired: true,
       },
     ],
-    dueAfterModule: 'module-mvp',
+    dueAfterModule: 'course-2-module-1',
     xpReward: 120,
   },
   {
@@ -130,7 +130,7 @@ export const HOMEWORK_ASSIGNMENTS: HomeworkAssignment[] = [
         isRequired: false,
       },
     ],
-    dueAfterModule: 'module-fundraising',
+    dueAfterModule: 'course-5-module-2',
     xpReward: 150,
   },
   {
@@ -163,7 +163,7 @@ export const HOMEWORK_ASSIGNMENTS: HomeworkAssignment[] = [
         isRequired: false,
       },
     ],
-    dueAfterModule: 'module-growth',
+    dueAfterModule: 'course-4-module-1',
     xpReward: 100,
   },
 ];

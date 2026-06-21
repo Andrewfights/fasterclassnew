@@ -41,6 +41,14 @@ export const FOUNDER_TOPICS: FounderTopic[] = [
     cover: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?q=80&w=1200',
   },
   {
+    id: 'inside-yc',
+    title: 'Inside Y Combinator',
+    blurb: 'The essential Startup School playbook — straight from YC partners and founders.',
+    tags: ['y-combinator', 'startup'],
+    accent: '#FF6B35',
+    cover: 'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=1200',
+  },
+  {
     id: 'finding-a-cofounder',
     title: 'Finding a Cofounder',
     blurb: 'Pick the right partner, split equity fairly, and build a team that lasts.',
@@ -84,7 +92,7 @@ export const FOUNDER_TOPICS: FounderTopic[] = [
     id: 'founder-mindset',
     title: 'Founder Mindset',
     blurb: 'Resilience, focus, and the timeless wisdom that keeps founders in the game.',
-    tags: ['mindset', 'motivation', 'philosophy', 'purpose', 'inspiration', 'hustle'],
+    tags: ['mindset', 'motivation', 'philosophy', 'purpose', 'inspiration', 'hustle', 'entrepreneur'],
     accent: '#F59E0B',
     cover: 'https://images.unsplash.com/photo-1504805572947-34fad45aed93?q=80&w=1200',
   },

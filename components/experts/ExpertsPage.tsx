@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
-import { ChevronLeft, Play, PlayCircle } from 'lucide-react';
+import { ChevronLeft, Play, PlayCircle, ExternalLink } from 'lucide-react';
 import { INITIAL_VIDEOS, formatDuration } from '../../constants';
 import { filterValidVideos } from '../../services/videoValidationService';
 import { getExperts, getExpertBySlug } from '../../data/experts';
@@ -67,15 +67,46 @@ export const ExpertsPage: React.FC = () => {
                 <p className="mc-label text-[#c9a227] mb-1.5">Teaches Founders</p>
                 <h1 className="mc-heading text-3xl md:text-5xl text-white leading-tight">{activeExpert.name}</h1>
                 <p className="mt-1 text-sm md:text-base text-white/60">{activeExpert.role}</p>
+                {activeExpert.tagline && (
+                  <p className="mt-1.5 text-sm md:text-base italic text-white/45 max-w-xl">{activeExpert.tagline}</p>
+                )}
               </div>
             </div>
 
             <p className="mt-5 max-w-2xl text-sm md:text-base text-white/75 leading-relaxed">
               {activeExpert.bio}
             </p>
-            <div className="mt-4 flex items-center gap-2 text-xs uppercase tracking-wider text-white/40">
-              <PlayCircle className="w-4 h-4" />
-              {activeExpert.videos.length} curated {activeExpert.videos.length === 1 ? 'video' : 'videos'}
+
+            {activeExpert.expertise && activeExpert.expertise.length > 0 && (
+              <div className="mt-5 flex flex-wrap gap-2">
+                {activeExpert.expertise.map(topic => (
+                  <span
+                    key={topic}
+                    className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs text-white/70"
+                  >
+                    {topic}
+                  </span>
+                ))}
+              </div>
+            )}
+
+            <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2">
+              <div className="flex items-center gap-2 text-xs uppercase tracking-wider text-white/40">
+                <PlayCircle className="w-4 h-4" />
+                {activeExpert.videos.length} curated {activeExpert.videos.length === 1 ? 'video' : 'videos'}
+              </div>
+              {activeExpert.links?.map(link => (
+                <a
+                  key={link.url}
+                  href={link.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 text-xs text-[#c9a227] hover:text-[#e0b94a] transition-colors"
+                >
+                  {link.label}
+                  <ExternalLink className="w-3 h-3" />
+                </a>
+              ))}
             </div>
           </div>
         </div>
