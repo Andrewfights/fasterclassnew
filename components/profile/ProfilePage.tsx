@@ -17,6 +17,7 @@ import {
   Edit3,
   Save,
   X,
+  Lock,
 } from 'lucide-react';
 import { useGamification } from '../../contexts/GamificationContext';
 import { useAuth } from '../../contexts/AuthContext';
@@ -126,10 +127,20 @@ export const ProfilePage: React.FC = () => {
   const moduleProgress = (completedModules / totalModules) * 100;
 
   return (
-    <div className="min-h-screen bg-[var(--color-bg-primary)] pt-20 pb-32">
+    <div className="min-h-screen bg-[var(--color-bg-primary)] pt-16 pb-32">
       <div className="max-w-4xl mx-auto px-4">
+        {/* Hero banner */}
+        <div className="relative rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
+          <img
+            src="/art/your-journey-hero.png"
+            alt="Your Journey"
+            className="w-full aspect-[21/9] object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-bg-primary)] via-[var(--color-bg-primary)]/10 to-transparent" />
+        </div>
+
         {/* Profile Header */}
-        <div className="bg-[var(--color-bg-elevated)] rounded-3xl shadow-[var(--shadow-card)] p-8 mb-8 border border-[var(--color-border)]">
+        <div className="relative z-10 -mt-12 md:-mt-16 bg-[var(--color-bg-elevated)] rounded-3xl shadow-[var(--shadow-card)] p-8 mb-8 border border-[var(--color-border)]">
           <div className="flex flex-col md:flex-row items-center gap-8">
             {/* Avatar & Level */}
             <div className="relative group">
@@ -507,43 +518,66 @@ export const ProfilePage: React.FC = () => {
           </Card>
         </div>
 
-        {/* Recent Milestones */}
+        {/* Milestones — full badge wall (locked + unlocked) */}
         <Card className="mt-8">
-          <h3 className="text-lg font-bold text-[var(--color-text-primary)] mb-4 flex items-center gap-2">
-            <Trophy className="w-5 h-5" />
-            Recent Milestones
-          </h3>
-
-          {progress.achievements.length === 0 ? (
-            <div className="text-center py-8 text-[var(--color-text-secondary)]">
-              <Trophy className="w-12 h-12 mx-auto mb-2 text-[#AFAFAF]" />
-              <p>Start grinding to unlock milestones!</p>
-            </div>
-          ) : (
-            <div className="flex flex-wrap gap-4">
-              {progress.achievements.slice(-6).map((userAchievement) => {
-                const achievement = ACHIEVEMENTS.find((a) => a.id === userAchievement.achievementId);
-                if (!achievement) return null;
-
-                return (
-                  <div
-                    key={achievement.id}
-                    className="flex items-center gap-3 bg-[var(--color-bg-secondary)] rounded-xl p-3"
-                  >
-                    <span className="text-2xl">{achievement.icon}</span>
-                    <div>
-                      <div className="font-semibold text-[var(--color-text-primary)] text-sm">
-                        {achievement.name}
+          {(() => {
+            const earnedIds = new Set(progress.achievements.map((u) => u.achievementId));
+            const unlockedCount = ACHIEVEMENTS.filter((a) => earnedIds.has(a.id)).length;
+            return (
+              <>
+                <div className="flex items-center justify-between mb-1">
+                  <h3 className="text-lg font-bold text-[var(--color-text-primary)] flex items-center gap-2">
+                    <Trophy className="w-5 h-5" />
+                    Milestones
+                  </h3>
+                  <span className="text-sm font-semibold text-[var(--color-accent)]">
+                    {unlockedCount} / {ACHIEVEMENTS.length} unlocked
+                  </span>
+                </div>
+                <p className="text-sm text-[var(--color-text-secondary)] mb-4">
+                  {unlockedCount === 0
+                    ? 'Start grinding — watch sessions, win challenges, and keep your streak to light these up.'
+                    : 'Badges you’ve earned on the way to launch. Keep going to unlock the rest.'}
+                </p>
+                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
+                  {ACHIEVEMENTS.map((a) => {
+                    const earned = progress.achievements.find((u) => u.achievementId === a.id);
+                    const unlocked = !!earned;
+                    return (
+                      <div
+                        key={a.id}
+                        title={`${a.name}${(a as any).description ? ' — ' + (a as any).description : ''}`}
+                        className={`group relative flex flex-col items-center text-center gap-1.5 rounded-2xl p-3 border transition-all hover:-translate-y-0.5 ${
+                          unlocked
+                            ? 'bg-[var(--color-bg-secondary)] border-[var(--color-accent)]/40 shadow-md'
+                            : 'bg-[var(--color-bg-secondary)]/40 border-[var(--color-border)]'
+                        }`}
+                      >
+                        <img
+                          src={`/art/badge-${a.id}.png`}
+                          alt=""
+                          loading="lazy"
+                          className={`w-16 h-16 rounded-xl object-cover transition-all ${
+                            unlocked ? 'group-hover:scale-105' : 'grayscale opacity-40'
+                          }`}
+                        />
+                        <span
+                          className={`text-[11px] font-medium leading-tight ${
+                            unlocked ? 'text-[var(--color-text-primary)]' : 'text-[var(--color-text-tertiary)]'
+                          }`}
+                        >
+                          {a.name}
+                        </span>
+                        {!unlocked && (
+                          <Lock className="absolute top-2 right-2 w-3 h-3 text-[var(--color-text-tertiary)]" />
+                        )}
                       </div>
-                      <div className="text-xs text-[var(--color-text-secondary)]">
-                        {new Date(userAchievement.unlockedAt).toLocaleDateString()}
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          )}
+                    );
+                  })}
+                </div>
+              </>
+            );
+          })()}
         </Card>
       </div>
     </div>
