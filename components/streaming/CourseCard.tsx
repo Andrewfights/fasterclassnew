@@ -8,9 +8,11 @@ import { useLibrary } from '../../contexts/LibraryContext';
 interface CourseCardProps {
   course: Course;
   size?: 'small' | 'medium' | 'large';
+  /** Fill the parent (grid) instead of a fixed rail width. */
+  fill?: boolean;
 }
 
-export const CourseCard: React.FC<CourseCardProps> = ({ course, size = 'medium' }) => {
+export const CourseCard: React.FC<CourseCardProps> = ({ course, size = 'medium', fill = false }) => {
   const navigate = useNavigate();
   const { watchHistory } = useLibrary();
 
@@ -36,7 +38,7 @@ export const CourseCard: React.FC<CourseCardProps> = ({ course, size = 'medium' 
   return (
     <div
       onClick={handleClick}
-      className={`${sizeClasses[size]} flex-shrink-0 group cursor-pointer`}
+      className={`${fill ? 'w-full' : `${sizeClasses[size]} flex-shrink-0`} group cursor-pointer`}
     >
       {/* Thumbnail */}
       <div className="relative aspect-video rounded-xl overflow-hidden bg-[#1E1E2E] mb-3">
