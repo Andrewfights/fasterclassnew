@@ -22,7 +22,7 @@ export const FOUNDER_TOPICS: FounderTopic[] = [
     blurb: 'Spot real problems worth solving and pressure-test them before you build.',
     tags: ['ideas', 'validation', 'discovery', 'thinking'],
     accent: '#FACC15',
-    cover: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=1200',
+    cover: '/art/topic-finding-your-idea.png',
   },
   {
     id: 'talking-to-users',
@@ -30,7 +30,7 @@ export const FOUNDER_TOPICS: FounderTopic[] = [
     blurb: 'Validate demand the hard way — by getting out and listening to customers.',
     tags: ['validation', 'users', 'customers', 'pmf', 'discovery'],
     accent: '#22D3EE',
-    cover: 'https://images.unsplash.com/photo-1543269865-cbf427effbad?q=80&w=1200',
+    cover: '/art/topic-talking-to-users.png',
   },
   {
     id: 'building-your-mvp',
@@ -38,7 +38,7 @@ export const FOUNDER_TOPICS: FounderTopic[] = [
     blurb: 'Ship the smallest thing that proves the point. Plan, build, launch, learn.',
     tags: ['mvp', 'product', 'programming', 'design', 'ui'],
     accent: '#34D399',
-    cover: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?q=80&w=1200',
+    cover: '/art/topic-building-your-mvp.png',
   },
   {
     id: 'inside-yc',
@@ -46,7 +46,7 @@ export const FOUNDER_TOPICS: FounderTopic[] = [
     blurb: 'The essential Startup School playbook — straight from YC partners and founders.',
     tags: ['y-combinator', 'startup'],
     accent: '#FF6B35',
-    cover: 'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=1200',
+    cover: '/art/topic-inside-yc.png',
   },
   {
     id: 'finding-a-cofounder',
@@ -54,7 +54,7 @@ export const FOUNDER_TOPICS: FounderTopic[] = [
     blurb: 'Pick the right partner, split equity fairly, and build a team that lasts.',
     tags: ['team', 'founders', 'networking', 'hiring', 'leadership'],
     accent: '#F472B6',
-    cover: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?q=80&w=1200',
+    cover: '/art/topic-finding-a-cofounder.png',
   },
   {
     id: 'your-pitch',
@@ -62,7 +62,7 @@ export const FOUNDER_TOPICS: FounderTopic[] = [
     blurb: 'Tell a story investors believe — from first deck to a closed round.',
     tags: ['pitch', 'fundraising', 'vc', 'equity', 'bootstrapping'],
     accent: '#A78BFA',
-    cover: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=1200',
+    cover: '/art/topic-your-pitch.png',
   },
   {
     id: 'go-to-market',
@@ -70,7 +70,7 @@ export const FOUNDER_TOPICS: FounderTopic[] = [
     blurb: 'Find your first customers and a repeatable way to reach the next thousand.',
     tags: ['marketing', 'sales', 'branding', 'social-media', 'content'],
     accent: '#FB923C',
-    cover: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1200',
+    cover: '/art/topic-go-to-market.png',
   },
   {
     id: 'growth-and-scaling',
@@ -78,7 +78,7 @@ export const FOUNDER_TOPICS: FounderTopic[] = [
     blurb: 'Turn early traction into durable growth without breaking what works.',
     tags: ['growth', 'scaling', 'users', 'customers', 'execution'],
     accent: '#60A5FA',
-    cover: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1200',
+    cover: '/art/topic-growth-and-scaling.png',
   },
   {
     id: 'hiring-and-team',
@@ -86,7 +86,7 @@ export const FOUNDER_TOPICS: FounderTopic[] = [
     blurb: 'Hire your first team, set culture early, and lead through the chaos.',
     tags: ['hiring', 'team', 'management', 'leadership'],
     accent: '#2DD4BF',
-    cover: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1200',
+    cover: '/art/topic-hiring-and-team.png',
   },
   {
     id: 'founder-mindset',
@@ -94,7 +94,7 @@ export const FOUNDER_TOPICS: FounderTopic[] = [
     blurb: 'Resilience, focus, and the timeless wisdom that keeps founders in the game.',
     tags: ['mindset', 'motivation', 'philosophy', 'purpose', 'inspiration', 'hustle', 'entrepreneur'],
     accent: '#F59E0B',
-    cover: 'https://images.unsplash.com/photo-1504805572947-34fad45aed93?q=80&w=1200',
+    cover: '/art/topic-founder-mindset.png',
   },
   {
     id: 'ai-and-tech',
@@ -102,7 +102,7 @@ export const FOUNDER_TOPICS: FounderTopic[] = [
     blurb: 'Build with the latest — AI, infrastructure, and the tools shaping startups.',
     tags: ['ai', 'llm', 'openai', 'tech', 'programming'],
     accent: '#818CF8',
-    cover: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1200',
+    cover: '/art/topic-ai-and-tech.png',
   },
 ];
 

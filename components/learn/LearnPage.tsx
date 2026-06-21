@@ -82,9 +82,9 @@ export const LearnPage: React.FC = () => {
   }, [progress, stats]);
 
   const exerciseTypes = [
-    { id: 'flashcards', title: 'Flashcards', description: 'Master startup terminology with spaced repetition.', icon: BookOpen, color: '#c9a227', unit: 'cards', stats: stats.flashcards, path: '/learn/flashcards' },
-    { id: 'quizzes', title: 'Quizzes', description: 'Test your knowledge with focused course quizzes.', icon: HelpCircle, color: '#22C55E', unit: 'quizzes', stats: stats.quizzes, path: '/learn/quizzes' },
-    { id: 'fillblank', title: 'Fill-in-the-Blank', description: 'Lock in key concepts by completing real sentences.', icon: PenTool, color: '#3B82F6', unit: 'exercises', stats: stats.fillBlank, path: '/learn/fill-blank' },
+    { id: 'flashcards', title: 'Flashcards', description: 'Master startup terminology with spaced repetition.', icon: BookOpen, color: '#c9a227', unit: 'cards', stats: stats.flashcards, path: '/learn/flashcards', art: '/art/learn-flashcards.png' },
+    { id: 'quizzes', title: 'Quizzes', description: 'Test your knowledge with focused course quizzes.', icon: HelpCircle, color: '#22C55E', unit: 'quizzes', stats: stats.quizzes, path: '/learn/quizzes', art: '/art/learn-quizzes.png' },
+    { id: 'fillblank', title: 'Fill-in-the-Blank', description: 'Lock in key concepts by completing real sentences.', icon: PenTool, color: '#3B82F6', unit: 'exercises', stats: stats.fillBlank, path: '/learn/fill-blank', art: '/art/learn-fill-blank.png' },
   ];
 
   return (
@@ -109,14 +109,23 @@ export const LearnPage: React.FC = () => {
               <button
                 key={ex.id}
                 onClick={() => navigate(ex.path)}
-                className="group bg-[#13131A] rounded-2xl border border-white/10 hover:border-white/25 hover:-translate-y-0.5 transition-all duration-200 p-6 text-left"
+                className="group bg-[#13131A] rounded-2xl border border-white/10 hover:border-white/25 hover:-translate-y-0.5 transition-all duration-200 text-left overflow-hidden"
               >
-                <div className="flex items-start justify-between mb-4">
-                  <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ backgroundColor: ex.color + '22' }}>
+                {/* Generated artwork banner */}
+                <div className="relative aspect-[16/9] overflow-hidden bg-[#0D0D12]">
+                  <img
+                    src={ex.art}
+                    alt={ex.title}
+                    loading="lazy"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#13131A] via-[#13131A]/10 to-transparent" />
+                  <div className="absolute bottom-3 left-3 w-11 h-11 rounded-xl flex items-center justify-center backdrop-blur-sm" style={{ backgroundColor: ex.color + '33' }}>
                     <Icon className="w-6 h-6" style={{ color: ex.color }} />
                   </div>
-                  <ArrowRight className="w-5 h-5 text-white/30 -translate-x-1 group-hover:translate-x-0 group-hover:text-white transition-all" />
+                  <ArrowRight className="absolute top-3 right-3 w-5 h-5 text-white/40 -translate-x-1 group-hover:translate-x-0 group-hover:text-white transition-all" />
                 </div>
+                <div className="p-6 pt-5">
                 <h3 className="font-semibold text-white text-lg mb-1 group-hover:text-[#c9a227] transition-colors">{ex.title}</h3>
                 <p className="text-sm text-[#9CA3AF] mb-4">{ex.description}</p>
                 {started ? (
@@ -134,6 +143,7 @@ export const LearnPage: React.FC = () => {
                     {ex.stats.total} {ex.unit}
                   </span>
                 )}
+                </div>
               </button>
             );
           })}

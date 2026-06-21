@@ -62,27 +62,38 @@ const GameCard: React.FC<{ game: GameDef; onClick: () => void }> = ({ game, onCl
   return (
     <button
       onClick={onClick}
-      className="group relative bg-[#13131A] rounded-2xl border border-white/10 hover:border-white/25 hover:-translate-y-0.5 transition-all duration-200 p-5 text-left"
+      className="group relative bg-[#13131A] rounded-2xl border border-white/10 hover:border-white/25 hover:-translate-y-0.5 transition-all duration-200 text-left overflow-hidden"
     >
-      <div className="flex items-start gap-4">
-        <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0" style={{ backgroundColor: game.color + '22' }}>
-          <Icon className="w-6 h-6" style={{ color: game.color }} />
-        </div>
-        <div className="flex-1 min-w-0">
-          <h3 className="font-semibold text-white group-hover:text-[#c9a227] transition-colors">{game.title}</h3>
-          <p className="text-sm text-[#9CA3AF] mt-1 line-clamp-2">{game.description}</p>
+      {/* Generated artwork banner */}
+      <div className="relative aspect-[16/9] overflow-hidden bg-[#0D0D12]">
+        <img
+          src={`/art/game-${game.id}.png`}
+          alt={game.title}
+          loading="lazy"
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#13131A] via-[#13131A]/10 to-transparent" />
+        <div
+          className="absolute bottom-3 left-3 w-10 h-10 rounded-xl flex items-center justify-center backdrop-blur-sm"
+          style={{ backgroundColor: game.color + '33' }}
+        >
+          <Icon className="w-5 h-5" style={{ color: game.color }} />
         </div>
       </div>
-      <div className="mt-4 flex items-center justify-between">
-        <span
-          className="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full"
-          style={{ backgroundColor: game.color + '18', color: game.color }}
-        >
-          <Clock className="w-3 h-3" /> {game.duration}
-        </span>
-        <span className="inline-flex items-center gap-1 text-xs font-medium text-white/40 group-hover:text-white transition-colors">
-          Play <ArrowRight className="w-3.5 h-3.5 -translate-x-1 group-hover:translate-x-0 transition-transform" />
-        </span>
+      <div className="p-5">
+        <h3 className="font-semibold text-white group-hover:text-[#c9a227] transition-colors">{game.title}</h3>
+        <p className="text-sm text-[#9CA3AF] mt-1 line-clamp-2">{game.description}</p>
+        <div className="mt-4 flex items-center justify-between">
+          <span
+            className="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full"
+            style={{ backgroundColor: game.color + '18', color: game.color }}
+          >
+            <Clock className="w-3 h-3" /> {game.duration}
+          </span>
+          <span className="inline-flex items-center gap-1 text-xs font-medium text-white/40 group-hover:text-white transition-colors">
+            Play <ArrowRight className="w-3.5 h-3.5 -translate-x-1 group-hover:translate-x-0 transition-transform" />
+          </span>
+        </div>
       </div>
     </button>
   );
