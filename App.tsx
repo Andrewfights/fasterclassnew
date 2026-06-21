@@ -35,7 +35,6 @@ import { TopicsPage } from './components/topics';
 import { ExpertsPage } from './components/experts';
 
 // Details Page
-import { VideoDetailsPage } from './components/details/VideoDetailsPage';
 
 // Search
 import { SearchPage } from './components/search';
@@ -155,6 +154,12 @@ const ProtectedCMSLayout: React.FC = () => {
   return <CMSLayout />;
 };
 
+// Legacy /details/:videoId deep links → the canonical /watch page.
+const DetailsRedirect: React.FC = () => {
+  const { videoId } = useParams<{ videoId: string }>();
+  return <Navigate to={`/watch/${videoId ?? ''}`} replace />;
+};
+
 function App() {
   const { isLoading, authState } = useAuth();
   const [showLogin, setShowLogin] = useState(false);
@@ -263,7 +268,8 @@ function App() {
                   <Route path="/watch/:videoId" element={<WatchPage />} />
 
                   {/* Content Details */}
-                  <Route path="/details/:videoId" element={<VideoDetailsPage />} />
+                  {/* Legacy details route — superseded by /watch; redirect deep links. */}
+                  <Route path="/details/:videoId" element={<DetailsRedirect />} />
 
                   {/* Library */}
                   <Route path="/my-list" element={<MyListPage />} />

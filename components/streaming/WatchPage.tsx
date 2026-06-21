@@ -1,9 +1,11 @@
 import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import { useParams, useNavigate, useSearchParams, useLocation } from 'react-router-dom';
-import { ArrowLeft, Plus, Check, Clock, User, RotateCcw, AlertTriangle, SkipForward, ListVideo } from 'lucide-react';
-import { INITIAL_VIDEOS, formatDuration, COURSES, getYoutubeId } from '../../constants';
+import { ArrowLeft, Plus, Check, Clock, User, RotateCcw, AlertTriangle, SkipForward, ListVideo, Play, X } from 'lucide-react';
+import { INITIAL_VIDEOS, INITIAL_PLAYLISTS, formatDuration, COURSES, getYoutubeId } from '../../constants';
+import { getCourseVideoIds } from '../../types';
 import { useLibrary } from '../../contexts/LibraryContext';
 import { usePiP } from '../../contexts/PiPContext';
+import { useTheme } from '../../contexts/ThemeContext';
 import { VideoCard } from './VideoCard';
 import { reportVideoError, filterValidVideos } from '../../services/videoValidationService';
 
@@ -12,8 +14,9 @@ export const WatchPage: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [searchParams] = useSearchParams();
-  const { isVideoSaved, toggleSaveVideo, updateVideoProgress, getVideoProgress, markVideoCompleted } = useLibrary();
+  const { isVideoSaved, toggleSaveVideo, updateVideoProgress, getVideoProgress, markVideoCompleted, getPlaylist } = useLibrary();
   const { enablePiP, disablePiP } = usePiP();
+  const { preferences, setAutoplayNext } = useTheme();
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [watchFromStart, setWatchFromStart] = useState(false);
   const [videoError, setVideoError] = useState(false);
@@ -21,6 +24,9 @@ export const WatchPage: React.FC = () => {
   const currentTimeRef = useRef<number>(0);
   const [currentTime, setCurrentTime] = useState(0);
   const playerStateRef = useRef<number>(-1);
+  const [upNext, setUpNext] = useState<typeof video>(null);
+  const [countdown, setCountdown] = useState(5);
+  const handleEndedRef = useRef<() => void>(() => {});
   const videoRef = useRef<typeof video>(null);
   const enablePiPRef = useRef(enablePiP);
 
@@ -120,7 +126,12 @@ export const WatchPage: React.FC = () => {
             : data?.event === 'onStateChange' && typeof info === 'number'
             ? info
             : undefined;
-        if (typeof state === 'number') playerStateRef.current = state;
+        if (typeof state === 'number') {
+          const prev = playerStateRef.current;
+          playerStateRef.current = state;
+          // 0 = ENDED — fire once on the transition into the ended state.
+          if (state === 0 && prev !== 0) handleEndedRef.current?.();
+        }
       } catch {
         // Not a JSON message, ignore
       }
@@ -159,6 +170,78 @@ export const WatchPage: React.FC = () => {
     }
     return idx;
   }, [video, currentTime]);
+
+  // ---- Binge context: where did we come from, and what plays next? ----
+  const courseParam = searchParams.get('course');
+  const playlistParam = searchParams.get('playlist');
+  const queueParam = searchParams.get('queue');
+
+  // The ordered list of video IDs we're bingeing through, from the URL context.
+  const contextIds = useMemo<string[]>(() => {
+    if (queueParam) return queueParam.split(',').filter(Boolean);
+    if (courseParam) {
+      const c = COURSES.find(c => c.id === courseParam);
+      return c ? getCourseVideoIds(c) : [];
+    }
+    if (playlistParam) {
+      const initial = INITIAL_PLAYLISTS.find(p => p.id === playlistParam);
+      if (initial) return initial.videoIds;
+      const userPl = getPlaylist(playlistParam);
+      return userPl ? userPl.videoIds : [];
+    }
+    return [];
+  }, [queueParam, courseParam, playlistParam, getPlaylist]);
+
+  // Preserve the binge context when navigating to the next video.
+  const contextQuery = courseParam
+    ? `?course=${courseParam}`
+    : playlistParam
+    ? `?playlist=${playlistParam}`
+    : queueParam
+    ? `?queue=${queueParam}`
+    : '';
+
+  // Next video: the following item in the binge context, else the top related video.
+  const nextVideo = useMemo(() => {
+    if (contextIds.length && videoId) {
+      const i = contextIds.indexOf(videoId);
+      if (i >= 0 && i < contextIds.length - 1) {
+        return INITIAL_VIDEOS.find(v => v.id === contextIds[i + 1]);
+      }
+      return undefined; // reached the end of the course/playlist/queue
+    }
+    return relatedVideos[0];
+  }, [contextIds, videoId, relatedVideos]);
+
+  const goToNext = useCallback(() => {
+    if (nextVideo) navigate(`/watch/${nextVideo.id}${contextQuery}`);
+  }, [nextVideo, contextQuery, navigate]);
+
+  // Keep the ended-handler ref pointing at the latest closure (the postMessage
+  // listener is mounted once, so it reads `next`/prefs through this ref).
+  handleEndedRef.current = () => {
+    if (videoId) markVideoCompleted(videoId);
+    if (preferences.autoplayNext && nextVideo) {
+      setCountdown(5);
+      setUpNext(nextVideo);
+    }
+  };
+
+  // Up-Next countdown → auto-advance, preserving binge context.
+  useEffect(() => {
+    if (!upNext) return;
+    if (countdown <= 0) {
+      navigate(`/watch/${upNext.id}${contextQuery}`);
+      return;
+    }
+    const t = setTimeout(() => setCountdown(c => c - 1), 1000);
+    return () => clearTimeout(t);
+  }, [upNext, countdown, contextQuery, navigate]);
+
+  // Clear any pending Up-Next card when the video changes.
+  useEffect(() => {
+    setUpNext(null);
+  }, [videoId]);
 
 
   // Handle watch from start
@@ -271,6 +354,42 @@ export const WatchPage: React.FC = () => {
               onError={handleVideoError}
             />
           )}
+
+          {/* Up-Next card — shown when the video ends and autoplay-next is on */}
+          {upNext && (
+            <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/85 backdrop-blur-sm px-6">
+              <div className="w-full max-w-md text-center">
+                <p className="text-xs uppercase tracking-wider text-[#c9a227] mb-3">
+                  Up next in {countdown}s
+                </p>
+                <div className="flex items-center gap-4 bg-[#13131A] border border-white/10 rounded-xl p-3 text-left">
+                  <div className="relative w-32 aspect-video rounded-lg overflow-hidden bg-[#1E1E2E] flex-shrink-0">
+                    <img src={upNext.thumbnail} alt={upNext.title} className="w-full h-full object-cover" />
+                  </div>
+                  <div className="min-w-0">
+                    <h4 className="text-white text-sm font-semibold line-clamp-2">{upNext.title}</h4>
+                    <p className="text-[#6B7280] text-xs mt-1">{upNext.expert}</p>
+                  </div>
+                </div>
+                <div className="flex items-center justify-center gap-3 mt-4">
+                  <button
+                    onClick={() => navigate(`/watch/${upNext.id}${contextQuery}`)}
+                    className="flex items-center gap-2 px-5 py-2.5 bg-[#c9a227] text-black font-semibold rounded-xl hover:bg-[#d4af37] transition-colors"
+                  >
+                    <Play className="w-4 h-4 fill-black" />
+                    Play now
+                  </button>
+                  <button
+                    onClick={() => setUpNext(null)}
+                    className="flex items-center gap-2 px-5 py-2.5 bg-[#2E2E3E] text-white font-medium rounded-xl hover:bg-[#3E3E4E] transition-colors"
+                  >
+                    <X className="w-4 h-4" />
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
@@ -285,6 +404,35 @@ export const WatchPage: React.FC = () => {
                 {video.title}
               </h1>
               <div className="flex items-center gap-2 flex-shrink-0 flex-wrap">
+                {contextIds.length > 0 && nextVideo && (
+                  <button
+                    onClick={goToNext}
+                    className="flex items-center gap-2 px-4 py-2 rounded-xl font-medium bg-[#c9a227] text-black hover:bg-[#d4af37] transition-colors"
+                  >
+                    <SkipForward className="w-4 h-4" />
+                    Next
+                  </button>
+                )}
+                <button
+                  onClick={() => setAutoplayNext(!preferences.autoplayNext)}
+                  role="switch"
+                  aria-checked={preferences.autoplayNext}
+                  title="Autoplay next video"
+                  className="flex items-center gap-2 px-4 py-2 rounded-xl font-medium bg-[#1E1E2E] text-white hover:bg-[#2E2E3E] transition-colors"
+                >
+                  <span
+                    className={`relative inline-block w-9 h-5 rounded-full transition-colors ${
+                      preferences.autoplayNext ? 'bg-[#c9a227]' : 'bg-[#4B4B5A]'
+                    }`}
+                  >
+                    <span
+                      className={`absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-white transition-transform ${
+                        preferences.autoplayNext ? 'translate-x-4' : ''
+                      }`}
+                    />
+                  </span>
+                  Autoplay
+                </button>
                 {hasProgress && !watchFromStart && (
                   <button
                     onClick={handleWatchFromStart}

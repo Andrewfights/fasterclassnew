@@ -14,6 +14,7 @@ interface ThemeContextType {
   // Other preference actions
   setFontSize: (size: 'small' | 'medium' | 'large') => void;
   setReducedMotion: (enabled: boolean) => void;
+  setAutoplayNext: (enabled: boolean) => void;
   resetPreferences: () => void;
 
   // Convenience booleans
@@ -112,6 +113,11 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     setPreferences(updated);
   }, []);
 
+  const setAutoplayNext = useCallback((enabled: boolean) => {
+    const updated = preferencesService.updatePreference('autoplayNext', enabled);
+    setPreferences(updated);
+  }, []);
+
   const resetPreferences = useCallback(() => {
     const defaults = preferencesService.resetPreferences();
     setPreferences(defaults);
@@ -123,10 +129,11 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     setTheme,
     setFontSize,
     setReducedMotion,
+    setAutoplayNext,
     resetPreferences,
     isDark: effectiveTheme === 'dark',
     isLight: effectiveTheme === 'light',
-  }), [preferences, effectiveTheme, setTheme, setFontSize, setReducedMotion, resetPreferences]);
+  }), [preferences, effectiveTheme, setTheme, setFontSize, setReducedMotion, setAutoplayNext, resetPreferences]);
 
   return (
     <ThemeContext.Provider value={value}>

@@ -18,6 +18,7 @@ import {
   MonitorPlay,
   ChevronUp,
   Clapperboard,
+  ListVideo,
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useGamification } from '../contexts/GamificationContext';
@@ -65,6 +66,7 @@ const Navigation: React.FC = () => {
   const libraryNav = [
     { path: '/search', label: 'Search', icon: Search },
     { path: '/my-list', label: 'My List', icon: Bookmark },
+    { path: '/my-stuff', label: 'Playlists', icon: ListVideo, matchAlso: '/my-stuff' },
     { path: '/profile', label: 'Your Journey', icon: User },
   ];
 
@@ -152,13 +154,6 @@ const Navigation: React.FC = () => {
                   >
                     <User className="w-4 h-4 text-white/50" />
                     <span>Your Journey</span>
-                  </button>
-                  <button
-                    onClick={() => { navigate('/profile'); setProfileDropdownOpen(false); }}
-                    className="w-full flex items-center gap-3 px-4 py-2.5 text-left text-white/90 hover:bg-[#1C2433] transition-all duration-[180ms]"
-                  >
-                    <Settings className="w-4 h-4 text-white/50" />
-                    <span>Preferences</span>
                   </button>
                   {authState.isAuthenticated && (
                     <button
@@ -271,13 +266,6 @@ const Navigation: React.FC = () => {
                       >
                         <Bookmark className="w-4 h-4 text-white/50" />
                         <span>My List</span>
-                      </button>
-                      <button
-                        onClick={() => { navigate('/profile'); setProfileDropdownOpen(false); }}
-                        className="w-full flex items-center gap-3 px-4 py-2.5 text-left text-white/90 hover:bg-[#1C2433] transition-all duration-[180ms]"
-                      >
-                        <Settings className="w-4 h-4 text-white/50" />
-                        <span>Preferences</span>
                       </button>
                     </div>
 

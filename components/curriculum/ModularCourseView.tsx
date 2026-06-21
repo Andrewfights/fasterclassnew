@@ -119,7 +119,8 @@ export const ModularCourseView: React.FC<ModularCourseViewProps> = ({ course }) 
 
   const handleContinue = () => {
     if (nextVideo) {
-      navigate(`/watch/${nextVideo.id}`);
+      // Carry the course context so the watch page can binge through it.
+      navigate(`/watch/${nextVideo.id}?course=${course.id}`);
     }
   };
 

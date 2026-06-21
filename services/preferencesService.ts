@@ -9,6 +9,7 @@ export interface UserPreferences {
   theme: ThemeMode;
   reducedMotion: boolean;
   fontSize: 'small' | 'medium' | 'large';
+  autoplayNext: boolean;
 }
 
 interface StoredPreferences {
@@ -21,6 +22,7 @@ const DEFAULT_PREFERENCES: UserPreferences = {
   theme: 'dark',
   reducedMotion: false,
   fontSize: 'medium',
+  autoplayNext: true,
 };
 
 function createDefaultPreferences(): UserPreferences {

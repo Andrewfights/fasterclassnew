@@ -47,7 +47,7 @@ export const CourseDetailPage: React.FC = () => {
   const progressPercent = (watchedCount / videos.length) * 100;
 
   const handlePlayVideo = (videoId: string) => {
-    navigate(`/watch/${videoId}`);
+    navigate(`/watch/${videoId}?course=${course.id}`);
   };
 
   return (

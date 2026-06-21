@@ -146,7 +146,7 @@ export const ModuleCard: React.FC<ModuleCardProps> = ({
     (keyTerms.length === 0 || termsReviewed >= keyTerms.length);
 
   const handlePlayVideo = (videoId: string) => {
-    navigate(`/watch/${videoId}`);
+    navigate(`/watch/${videoId}?course=${course.id}`);
   };
 
   const handleTakeQuiz = () => {
