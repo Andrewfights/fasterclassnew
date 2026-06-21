@@ -69,6 +69,7 @@ export const EXPERT_PROFILES: Record<string, ExpertProfile> = {
   },
   'Kevin Hale': {
     role: 'Co-founder, Wufoo · Partner, Y Combinator',
+    image: '/experts/kevin-hale.jpg',
     tagline: 'The mechanics of pitching and products people love.',
     bio: 'Master of pitching, product design, and the mechanics of how startups actually grow. He built Wufoo into a beloved, capital-efficient product and now teaches founders how to do the same.',
     expertise: ['Pitching', 'Product design', 'Conversion', 'Fundraising'],
@@ -147,6 +148,7 @@ export const EXPERT_PROFILES: Record<string, ExpertProfile> = {
   },
   'Marty Cagan': {
     role: 'Author, Inspired · SVPG',
+    image: '/experts/marty-cagan.jpg',
     tagline: 'How the best product teams actually work.',
     bio: 'The definitive voice on modern product management and continuous discovery. Through SVPG and his books Inspired and Empowered, he defined how strong product teams discover and deliver value.',
     expertise: ['Product management', 'Discovery', 'Product teams', 'Roadmaps'],
