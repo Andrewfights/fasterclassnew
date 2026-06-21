@@ -188,6 +188,9 @@ export const ModuleCard: React.FC<ModuleCardProps> = ({
 
           {/* Title and description */}
           <div className="flex-1 min-w-0">
+            <p className="text-[10px] uppercase tracking-wider text-[#8B5CF6] font-medium mb-0.5">
+              Chapter {moduleNumber}
+            </p>
             <div className="flex items-center gap-2 mb-1">
               <h3 className="font-semibold text-white truncate">{module.title}</h3>
               {isComplete && (

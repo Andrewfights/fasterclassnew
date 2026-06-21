@@ -2066,7 +2066,13 @@ export const INITIAL_VIDEOS: Video[] = [
     embedUrl: 'https://www.youtube.com/embed/_LsvdlaF5_k',
     duration: 4200,
     platform: 'youtube',
-    tags: ['product', 'focus', 'leadership']
+    tags: ['product', 'focus', 'leadership'],
+    chapters: [
+      { title: 'Opening remarks', start: 0 },
+      { title: 'Focus: saying no to 1,000 things', start: 600 },
+      { title: 'Strategy & the customer experience', start: 1800 },
+      { title: 'Audience Q&A', start: 3000 },
+    ]
   },
   {
     id: 'expert-jobs-3',
@@ -2110,7 +2116,13 @@ export const INITIAL_VIDEOS: Video[] = [
     embedUrl: 'https://www.youtube.com/embed/e0KJlYe2Rjk',
     duration: 2400,
     platform: 'youtube',
-    tags: ['product', 'management', 'keynote']
+    tags: ['product', 'management', 'keynote'],
+    chapters: [
+      { title: 'What great product teams do differently', start: 0 },
+      { title: 'Discovery vs delivery', start: 600 },
+      { title: 'Empowered teams', start: 1200 },
+      { title: 'Outcomes over output', start: 1800 },
+    ]
   },
   {
     id: 'expert-cagan-4',
@@ -2132,7 +2144,14 @@ export const INITIAL_VIDEOS: Video[] = [
     embedUrl: 'https://www.youtube.com/embed/LCEmiRjPEtQ',
     duration: 2400,
     platform: 'youtube',
-    tags: ['ai', 'llm', 'startups']
+    tags: ['ai', 'llm', 'startups'],
+    chapters: [
+      { title: 'The third era of software', start: 0 },
+      { title: 'Software 1.0 → 2.0 → 3.0', start: 300 },
+      { title: 'Programming in English', start: 900 },
+      { title: 'LLMs as a new kind of computer', start: 1500 },
+      { title: 'What it means for builders', start: 2100 },
+    ]
   },
   {
     id: 'expert-karpathy-4',

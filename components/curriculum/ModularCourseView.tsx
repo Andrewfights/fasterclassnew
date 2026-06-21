@@ -187,7 +187,7 @@ export const ModularCourseView: React.FC<ModularCourseViewProps> = ({ course }) 
               <div className="flex flex-wrap items-center gap-4 text-sm text-[#9CA3AF]">
                 <div className="flex items-center gap-1.5">
                   <BookOpen className="w-4 h-4" />
-                  <span>{courseStats.totalModules} Modules</span>
+                  <span>{courseStats.totalModules} Chapters</span>
                 </div>
                 <div className="flex items-center gap-1.5">
                   <Play className="w-4 h-4" />
@@ -208,7 +208,7 @@ export const ModularCourseView: React.FC<ModularCourseViewProps> = ({ course }) 
                 <div className="flex items-center justify-between text-sm mb-2">
                   <span className="text-[#9CA3AF]">Course Progress</span>
                   <span className="text-white font-medium">
-                    {courseStats.completedModules}/{courseStats.totalModules} modules completed
+                    {courseStats.completedModules}/{courseStats.totalModules} chapters completed
                   </span>
                 </div>
                 <div className="h-2 bg-[#2E2E3E] rounded-full overflow-hidden">
@@ -355,7 +355,7 @@ export const ModularCourseView: React.FC<ModularCourseViewProps> = ({ course }) 
                       <CheckCircle className="w-4 h-4" />
                       <span className="font-bold">{courseStats.totalModules}</span>
                     </div>
-                    <p className="text-xs text-[#6B7280]">Modules</p>
+                    <p className="text-xs text-[#6B7280]">Chapters</p>
                   </div>
                   <div className="text-center">
                     <div className="flex items-center justify-center gap-1 text-[#22C55E] mb-1">

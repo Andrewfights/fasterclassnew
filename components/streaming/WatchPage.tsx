@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import { useParams, useNavigate, useSearchParams, useLocation } from 'react-router-dom';
-import { ArrowLeft, Plus, Check, Clock, User, RotateCcw, AlertTriangle, SkipForward } from 'lucide-react';
+import { ArrowLeft, Plus, Check, Clock, User, RotateCcw, AlertTriangle, SkipForward, ListVideo } from 'lucide-react';
 import { INITIAL_VIDEOS, formatDuration, COURSES, getYoutubeId } from '../../constants';
 import { useLibrary } from '../../contexts/LibraryContext';
 import { usePiP } from '../../contexts/PiPContext';
@@ -19,6 +19,8 @@ export const WatchPage: React.FC = () => {
   const [videoError, setVideoError] = useState(false);
   const [errorRetryCount, setErrorRetryCount] = useState(0);
   const currentTimeRef = useRef<number>(0);
+  const [currentTime, setCurrentTime] = useState(0);
+  const playerStateRef = useRef<number>(-1);
   const videoRef = useRef<typeof video>(null);
   const enablePiPRef = useRef(enablePiP);
 
@@ -94,16 +96,31 @@ export const WatchPage: React.FC = () => {
     currentTimeRef.current = resumeTime;
   }, [resumeTime]);
 
-  // Listen for YouTube player time updates via postMessage
+  // Listen for YouTube player updates via postMessage (time + player state)
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
       if (!event.origin.includes('youtube.com')) return;
       try {
         const data = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
-        // YouTube sends current time in info.currentTime
-        if (data.info && typeof data.info.currentTime === 'number') {
-          currentTimeRef.current = Math.floor(data.info.currentTime);
+        const info = data?.info;
+        // Current time — keep a ref for PiP handoff and bump state only when the
+        // whole second changes (drives chapter highlighting without 60fps renders).
+        if (info && typeof info.currentTime === 'number') {
+          const secs = Math.floor(info.currentTime);
+          if (secs !== currentTimeRef.current) {
+            currentTimeRef.current = secs;
+            setCurrentTime(secs);
+          }
         }
+        // Player state — 0 (ENDED) drives autoplay-next. Comes via infoDelivery
+        // (info.playerState) or onStateChange (info is the state number).
+        const state =
+          info && typeof info.playerState === 'number'
+            ? info.playerState
+            : data?.event === 'onStateChange' && typeof info === 'number'
+            ? info
+            : undefined;
+        if (typeof state === 'number') playerStateRef.current = state;
       } catch {
         // Not a JSON message, ignore
       }
@@ -112,6 +129,36 @@ export const WatchPage: React.FC = () => {
     window.addEventListener('message', handleMessage);
     return () => window.removeEventListener('message', handleMessage);
   }, []);
+
+  // Send a command to the YouTube iframe (enablejsapi=1).
+  const postToPlayer = useCallback((func: string, args: unknown[] = []) => {
+    iframeRef.current?.contentWindow?.postMessage(
+      JSON.stringify({ event: 'command', func, args }),
+      '*'
+    );
+  }, []);
+
+  // Jump to a chapter timestamp and keep playing.
+  const seekTo = useCallback(
+    (seconds: number) => {
+      postToPlayer('seekTo', [seconds, true]);
+      postToPlayer('playVideo');
+      currentTimeRef.current = Math.floor(seconds);
+      setCurrentTime(Math.floor(seconds));
+    },
+    [postToPlayer]
+  );
+
+  // The chapter currently playing = last chapter whose start <= currentTime.
+  const activeChapterIndex = useMemo(() => {
+    const chapters = video?.chapters;
+    if (!chapters || chapters.length === 0) return -1;
+    let idx = 0;
+    for (let i = 0; i < chapters.length; i++) {
+      if (currentTime >= chapters[i].start) idx = i;
+    }
+    return idx;
+  }, [video, currentTime]);
 
 
   // Handle watch from start
@@ -325,8 +372,47 @@ export const WatchPage: React.FC = () => {
             )}
           </div>
 
-          {/* Sidebar - Related Videos */}
+          {/* Sidebar - Chapters + Related Videos */}
           <div className="lg:w-80">
+            {video.chapters && video.chapters.length > 0 && (
+              <div className="mb-8">
+                <h3 className="flex items-center gap-2 text-lg font-semibold text-white mb-4">
+                  <ListVideo className="w-5 h-5" /> Chapters
+                </h3>
+                <div className="space-y-1">
+                  {video.chapters.map((chapter, i) => {
+                    const isActive = i === activeChapterIndex;
+                    return (
+                      <button
+                        key={`${chapter.start}-${chapter.title}`}
+                        onClick={() => seekTo(chapter.start)}
+                        className={`w-full flex items-center gap-3 text-left px-3 py-2 rounded-lg transition-colors ${
+                          isActive
+                            ? 'bg-[#c9a227]/15 border border-[#c9a227]/40'
+                            : 'hover:bg-[#1E1E2E] border border-transparent'
+                        }`}
+                      >
+                        <span
+                          className={`text-xs font-mono tabular-nums shrink-0 ${
+                            isActive ? 'text-[#c9a227]' : 'text-[#6B7280]'
+                          }`}
+                        >
+                          {formatDuration(chapter.start)}
+                        </span>
+                        <span
+                          className={`text-sm line-clamp-2 ${
+                            isActive ? 'text-white font-medium' : 'text-[#9CA3AF]'
+                          }`}
+                        >
+                          {chapter.title}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
             <h3 className="text-lg font-semibold text-white mb-4">Next Moves</h3>
             <div className="space-y-4">
               {relatedVideos.map(v => (

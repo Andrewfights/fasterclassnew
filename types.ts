@@ -17,6 +17,13 @@ export interface Video {
   startTime?: number;           // Start playback from this second
   endTime?: number;             // End playback at this second (for clips)
   distribution?: DistributionChannel;  // Where this video appears
+  chapters?: VideoChapter[];    // Optional in-video timestamp chapters
+}
+
+// An in-video chapter marker — jump to `start` (seconds) within a single video.
+export interface VideoChapter {
+  title: string;
+  start: number;                // Seconds from the beginning of the video
 }
 
 // Episode - combines multiple video clips into one playable unit
