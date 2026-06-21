@@ -26,9 +26,12 @@ export const VODPage: React.FC = () => {
     return validVideos.filter(v => !v.isVertical && v.duration > 120);
   }, [contentFormat, validVideos]);
 
-  // Get shorts for the shorts section
+  // Get shorts for the shorts section — real vertical (oardefault) thumbnails first
   const shortsVideos = useMemo(() => {
-    return validVideos.filter(v => v.isVertical === true || v.duration <= 120);
+    const list = validVideos.filter(v => v.isVertical === true || v.duration <= 120);
+    return [...list].sort((a, b) =>
+      Number(b.thumbnail.includes('oardefault')) - Number(a.thumbnail.includes('oardefault'))
+    );
   }, [validVideos]);
 
   // Featured rows with cross-row dedup so the same video never heads multiple rows
@@ -560,11 +563,10 @@ const ShortsCard: React.FC<ShortsCardProps> = ({ video, onClick }) => {
       className="group text-left w-full"
     >
       <div className="relative aspect-[9/16] rounded-xl overflow-hidden mb-2 bg-[#1E1E2E]">
-        <img src={video.thumbnail} alt="" aria-hidden className="absolute inset-0 w-full h-full object-cover blur-xl scale-110 opacity-50" />
         <img
           src={video.thumbnail}
           alt={video.title}
-          className="relative w-full h-full object-contain transition-transform duration-300 group-hover:scale-105"
+          className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
 

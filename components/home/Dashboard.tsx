@@ -64,11 +64,12 @@ export const Dashboard: React.FC = () => {
       .slice(0, 10);
   }, [continueWatching, validVideos]);
 
-  // Get shorts videos for the shorts section
+  // Get shorts videos for the shorts section — prefer real vertical (oardefault)
+  // thumbnails so the rail showcases true vertical Shorts first.
   const shortsVideos = useMemo(() => {
-    return validVideos
-      .filter(v => v.isVertical === true)
-      .slice(0, 12);
+    const verticals = validVideos.filter(v => v.isVertical === true);
+    const isTrueVertical = (v: typeof verticals[number]) => v.thumbnail.includes('oardefault');
+    return [...verticals].sort((a, b) => Number(isTrueVertical(b)) - Number(isTrueVertical(a))).slice(0, 12);
   }, [validVideos]);
 
   // Top experts (most curated talks) for the home rail
@@ -329,11 +330,10 @@ export const Dashboard: React.FC = () => {
                 className="flex-shrink-0 w-28 sm:w-32 group"
               >
                 <div className="relative aspect-[9/16] rounded-xl overflow-hidden mb-2 bg-[#1E1E2E]">
-                  <img src={video.thumbnail} alt="" aria-hidden className="absolute inset-0 w-full h-full object-cover blur-xl scale-110 opacity-50" />
                   <img
                     src={video.thumbnail}
                     alt={video.title}
-                    className="relative w-full h-full object-contain group-hover:scale-105 transition-transform"
+                    className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                   <div className="absolute bottom-2 right-2 px-1.5 py-0.5 bg-black/70 rounded text-[10px] text-white">
