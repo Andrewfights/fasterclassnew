@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowRight, Zap } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { LandingNav } from './LandingNav';
 import { HeroCarousel } from '../vod/HeroCarousel';
 import { InstructorMarquee } from './InstructorMarquee';
@@ -295,11 +295,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onSignIn, onGetStarted
       {/* Footer */}
       <footer className="py-12 px-6 md:px-8 border-t border-[#2a2a2a]">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
-            <div className="bg-gradient-to-br from-[#c9a227] to-[#a88520] p-2 rounded-lg">
-              <Zap className="h-5 w-5 text-black" />
-            </div>
-            <span className="text-lg font-bold text-white">Fasterclass</span>
+          <div className="flex items-center gap-2.5">
+            <img src="/brand/fasterclass-mark.png" alt="FasterClass" className="h-7 w-auto" />
+            <span className="text-lg font-bold text-white tracking-tight">FasterClass</span>
           </div>
           <p className="text-[#737373] text-sm">
             Built for founders, by founders.

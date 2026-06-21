@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { newsletterService } from '../services/newsletterService';
-import { Zap, Lock, Mail, AlertCircle, Loader2, ArrowLeft, User, Check } from 'lucide-react';
+import { Lock, Mail, AlertCircle, Loader2, ArrowLeft, User, Check } from 'lucide-react';
 
 interface LoginPageProps {
   onLoginSuccess: () => void;
@@ -62,11 +62,11 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess, onBack, initialMo
 
         {/* Logo */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center mb-4">
-            <div className="bg-gradient-to-br from-[#c9a227] to-[#a88520] p-3 rounded-xl">
-              <Zap className="h-8 w-8 text-black" />
-            </div>
-          </div>
+          <img
+            src="/brand/fasterclass-logo.png"
+            alt="FasterClass — Fast Track Learning"
+            className="h-28 w-auto mx-auto mb-6"
+          />
           <h1 className="mc-heading text-3xl text-white">
             {mode === 'signin' ? 'Welcome Back' : 'Get Started'}
           </h1>

@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
-  Zap,
   Play,
   BookOpen,
   Settings,
@@ -104,11 +103,9 @@ const Navigation: React.FC = () => {
       {/* Desktop Left Sidebar - sj.land inspired, clean & grouped */}
       <aside className="hidden lg:flex fixed top-0 left-0 bottom-0 w-60 z-50 flex-col bg-[#0A0F18] border-r border-white/5">
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-2 px-5 h-16 cursor-pointer group shrink-0">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#FACC15] to-[#F59E0B] flex items-center justify-center shadow-card">
-            <Zap className="h-4 w-4 text-black" />
-          </div>
-          <span className="text-lg font-bold text-white">Fasterclass</span>
+        <Link to="/" className="flex items-center gap-2.5 px-5 h-16 cursor-pointer group shrink-0">
+          <img src="/brand/fasterclass-mark.png" alt="FasterClass" className="h-7 w-auto" />
+          <span className="text-lg font-bold text-white tracking-tight">FasterClass</span>
         </Link>
 
         {/* Nav groups */}
@@ -186,11 +183,9 @@ const Navigation: React.FC = () => {
           <div className="flex items-center justify-between h-14">
             {/* Logo */}
             <Link to="/" className="flex items-center gap-2 cursor-pointer group">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#FACC15] to-[#F59E0B] flex items-center justify-center shadow-card">
-                <Zap className="h-4 w-4 text-black" />
-              </div>
-              <span className="text-lg font-bold text-white hidden sm:inline">
-                Fasterclass
+              <img src="/brand/fasterclass-mark.png" alt="FasterClass" className="h-7 w-auto" />
+              <span className="text-lg font-bold text-white tracking-tight hidden sm:inline">
+                FasterClass
               </span>
             </Link>
 
