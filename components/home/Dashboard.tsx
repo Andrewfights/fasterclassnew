@@ -277,7 +277,7 @@ export const Dashboard: React.FC = () => {
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold text-white">Curated For Your Hustle</h2>
             <Link
-              to="/vod"
+              to="/topics"
               className="text-sm text-[#c9a227] hover:text-[#d4af37] transition-colors flex items-center gap-1"
             >
               Explore More <ChevronRight className="w-4 h-4" />
@@ -316,7 +316,7 @@ export const Dashboard: React.FC = () => {
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold text-white">Quick Hits</h2>
             <Link
-              to="/vod"
+              to="/feed"
               className="text-sm text-[#c9a227] hover:text-[#d4af37] transition-colors flex items-center gap-1"
             >
               View All Shorts <ChevronRight className="w-4 h-4" />

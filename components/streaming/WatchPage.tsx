@@ -75,7 +75,7 @@ export const WatchPage: React.FC = () => {
     if (relatedVideos.length > 0) {
       navigate(`/watch/${relatedVideos[0].id}`);
     } else {
-      navigate('/vod');
+      navigate('/topics');
     }
   }, [relatedVideos, navigate]);
 
@@ -349,7 +349,7 @@ export const WatchPage: React.FC = () => {
                     </button>
                   )}
                   <button
-                    onClick={() => navigate('/vod')}
+                    onClick={() => navigate('/topics')}
                     className="px-6 py-3 bg-[#2E2E3E] text-white font-semibold rounded-xl hover:bg-[#3E3E4E] transition-colors"
                   >
                     Browse Videos

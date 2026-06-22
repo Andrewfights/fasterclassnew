@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
-  Play,
   BookOpen,
   Settings,
   Search,
@@ -13,11 +12,8 @@ import {
   Users,
   ChevronDown,
   LogOut,
-  GraduationCap,
   MonitorPlay,
   ChevronUp,
-  Clapperboard,
-  ListVideo,
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useGamification } from '../contexts/GamificationContext';
@@ -29,22 +25,16 @@ const Navigation: React.FC = () => {
   const { level, levelDefinition } = useGamification();
   const currentPath = location.pathname;
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
-  const [watchMenuOpen, setWatchMenuOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const watchMenuRef = useRef<HTMLDivElement>(null);
 
   const isActive = (path: string) =>
     path === '/' ? currentPath === '/' : currentPath === path || currentPath.startsWith(path + '/');
-  const isWatchActive = isActive('/vod') || isActive('/feed');
 
   // Close dropdowns when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setProfileDropdownOpen(false);
-      }
-      if (watchMenuRef.current && !watchMenuRef.current.contains(event.target as Node)) {
-        setWatchMenuOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -56,26 +46,24 @@ const Navigation: React.FC = () => {
     { path: '/', label: 'Home', icon: Home },
     { path: '/topics', label: 'Topics', icon: Compass },
     { path: '/experts', label: 'Experts', icon: Users },
-    { path: '/vod', label: 'Watch', icon: Play, matchAlso: '/watch' },
     { path: '/courses', label: 'Courses', icon: BookOpen, matchAlso: '/course' },
-    { path: '/learn', label: 'Learn', icon: GraduationCap },
+    { path: '/feed', label: 'Shorts', icon: MonitorPlay },
     { path: '/games', label: 'Games', icon: Gamepad2 },
   ];
 
   const libraryNav = [
     { path: '/search', label: 'Search', icon: Search },
     { path: '/my-list', label: 'My List', icon: Bookmark },
-    { path: '/my-stuff', label: 'Playlists', icon: ListVideo, matchAlso: '/my-stuff' },
     { path: '/profile', label: 'Your Journey', icon: User },
   ];
 
   // Mobile bottom nav items (5 sections)
   const mobileNavItems = [
     { path: '/', label: 'Home', icon: Home },
+    { path: '/topics', label: 'Topics', icon: Compass },
     { path: '/courses', label: 'Courses', icon: BookOpen, matchAlso: '/course' },
-    { path: 'watch', label: 'Watch', icon: MonitorPlay, isWatch: true },
+    { path: '/feed', label: 'Shorts', icon: MonitorPlay },
     { path: '/games', label: 'Games', icon: Gamepad2 },
-    { path: '/learn', label: 'Learn', icon: GraduationCap, matchAlso: '/learn' },
   ];
 
 
@@ -300,62 +288,6 @@ const Navigation: React.FC = () => {
         <div className="flex items-center justify-around h-16 px-2">
           {mobileNavItems.map((item) => {
             const Icon = item.icon;
-
-            // Handle Watch menu specially
-            if (item.isWatch) {
-              return (
-                <div key={item.path} className="relative" ref={watchMenuRef}>
-                  <button
-                    onClick={() => setWatchMenuOpen(!watchMenuOpen)}
-                    className={`flex flex-col items-center justify-center gap-1 px-3 py-2 rounded-xl transition-all duration-[180ms] ease-[cubic-bezier(.22,.61,.36,1)] ${
-                      isWatchActive
-                        ? 'text-[#FACC15]'
-                        : 'text-white/50'
-                    }`}
-                  >
-                    <div className="relative">
-                      <Icon className="w-5 h-5" />
-                    </div>
-                    <span className="text-[10px] font-semibold">{item.label}</span>
-                  </button>
-
-                  {/* Watch Menu Popup */}
-                  {watchMenuOpen && (
-                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-40 bg-[#111827] rounded-xl border border-white/10 shadow-modal overflow-hidden">
-                      <button
-                        onClick={() => {
-                          navigate('/feed');
-                          setWatchMenuOpen(false);
-                        }}
-                        className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-all duration-[180ms] ${
-                          isActive('/feed')
-                            ? 'bg-gradient-to-r from-[#FACC15]/20 to-[#F59E0B]/20 text-[#FACC15]'
-                            : 'text-white/90 hover:bg-[#1C2433]'
-                        }`}
-                      >
-                        <Clapperboard className="w-5 h-5" />
-                        <span className="font-semibold">Shorts</span>
-                      </button>
-                      <button
-                        onClick={() => {
-                          navigate('/vod');
-                          setWatchMenuOpen(false);
-                        }}
-                        className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-all duration-[180ms] ${
-                          isActive('/vod')
-                            ? 'bg-gradient-to-r from-[#FACC15]/20 to-[#F59E0B]/20 text-[#FACC15]'
-                            : 'text-white/90 hover:bg-[#1C2433]'
-                        }`}
-                      >
-                        <Play className="w-5 h-5" />
-                        <span className="font-semibold">Watch</span>
-                      </button>
-                    </div>
-                  )}
-                </div>
-              );
-            }
-
             const active = isActive(item.path) || (item.matchAlso && isActive(item.matchAlso));
 
             return (

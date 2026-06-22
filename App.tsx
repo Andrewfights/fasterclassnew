@@ -22,11 +22,8 @@ import {
   MyListPage,
   ResourcesPage,
 } from './components/streaming';
-import { PlaylistManager } from './components/streaming/PlaylistManager';
-import { PlaylistDetailPage } from './components/streaming/PlaylistDetailPage';
 
 // VOD components
-import { VODPage } from './components/vod';
 
 // Topics catalogue
 import { TopicsPage } from './components/topics';
@@ -274,12 +271,12 @@ function App() {
                   {/* Library */}
                   <Route path="/my-list" element={<MyListPage />} />
 
-                  {/* My Stuff - Playlist Management */}
-                  <Route path="/my-stuff" element={<PlaylistManager />} />
-                  <Route path="/my-stuff/:playlistId" element={<PlaylistDetailPage />} />
+                  {/* Playlists (removed) — fold deep links into My List */}
+                  <Route path="/my-stuff" element={<Navigate to="/my-list" replace />} />
+                  <Route path="/my-stuff/:playlistId" element={<Navigate to="/my-list" replace />} />
 
-                  {/* On Demand (VOD) */}
-                  <Route path="/vod" element={<VODPage />} />
+                  {/* Watch / VOD browse (removed) — videos are reached via Topics/Courses/Experts */}
+                  <Route path="/vod" element={<Navigate to="/" replace />} />
 
                   {/* Topics catalogue */}
                   <Route path="/topics" element={<TopicsPage />} />
@@ -307,8 +304,8 @@ function App() {
                   <Route path="/games" element={<GamesPage />} />
                   <Route path="/games/:gameId" element={<GamesPage />} />
 
-                  {/* Learn */}
-                  <Route path="/learn" element={<LearnPage />} />
+                  {/* Learn hub (removed) — quizzes/flashcards still reachable from courses */}
+                  <Route path="/learn" element={<Navigate to="/" replace />} />
                   <Route path="/learn/flashcards" element={<FlashcardPage />} />
                   <Route path="/learn/quizzes" element={<QuizPage />} />
                   <Route path="/learn/quiz/:quizId" element={<QuizPlayer />} />

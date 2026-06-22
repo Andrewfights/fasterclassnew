@@ -19,7 +19,7 @@ const MISSION_ICONS: Record<MissionType, React.ReactNode> = {
 };
 
 const MISSION_ROUTES: Record<MissionType, string> = {
-  watch_video: '/vod',
+  watch_video: '/topics',
   complete_quiz: '/games',
   play_game: '/games',
   finish_module: '/courses',
