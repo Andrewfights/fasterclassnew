@@ -47,15 +47,6 @@ export const Dashboard: React.FC = () => {
   const validVideos = useMemo(() => filterValidVideos(INITIAL_VIDEOS), []);
 
   // Get continue watching video
-  const continueVideo = useMemo(() => {
-    if (continueWatching.length === 0) return null;
-    const historyItem = continueWatching[0];
-    const video = validVideos.find(v => v.id === historyItem.videoId);
-    if (!video) return null;
-    const progressPercent = Math.round((historyItem.timestamp / video.duration) * 100);
-    return { video, progress: progressPercent, timestamp: historyItem.timestamp };
-  }, [continueWatching, validVideos]);
-
   // Get recommended videos (based on tags from watched videos)
   const recommendedVideos = useMemo(() => {
     const watchedIds = new Set(continueWatching.map(h => h.videoId));
@@ -178,37 +169,6 @@ export const Dashboard: React.FC = () => {
           </div>
         )}
 
-        {/* Continue Learning hero card (when something is in progress) */}
-        {continueVideo && (
-          <div className="mb-10">
-            <button
-              onClick={() => navigate(`/watch/${continueVideo.video.id}?t=${continueVideo.timestamp}`)}
-              className="w-full max-w-3xl bg-[#1A1A24] rounded-2xl border border-[#2E2E3E] overflow-hidden hover:border-[#c9a227]/50 transition-all group"
-            >
-              <div className="relative aspect-video">
-                <img
-                  src={continueVideo.video.thumbnail}
-                  alt={continueVideo.video.title}
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <Play className="w-8 h-8 text-white fill-white" />
-                  </div>
-                </div>
-                <div className="absolute bottom-0 left-0 right-0 p-5">
-                  <p className="mc-label text-[#c9a227] mb-1">Pick Up Where You Left Off</p>
-                  <h3 className="font-display text-xl font-bold text-white mb-1">{continueVideo.video.title}</h3>
-                  <p className="text-sm text-white/70">{continueVideo.video.expert}</p>
-                </div>
-                <div className="absolute bottom-0 left-0 right-0 h-1 bg-black/50">
-                  <div className="h-full bg-[#c9a227]" style={{ width: `${continueVideo.progress}%` }} />
-                </div>
-              </div>
-            </button>
-          </div>
-        )}
 
         {/* Browse by Topic */}
         <section className="mb-10">
