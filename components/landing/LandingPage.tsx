@@ -44,6 +44,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onSignIn, onGetStarted
   ];
 
   const handleMoreInfo = (carouselItem: HeroCarouselItem) => {
+    if (carouselItem.type === 'topic') return; // landing carousel uses only video/course
     setPreviewModal({
       isOpen: true,
       item: carouselItem.item,

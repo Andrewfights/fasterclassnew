@@ -85,10 +85,6 @@ export const WatchPage: React.FC = () => {
     setErrorRetryCount(0);
   }, [videoId]);
 
-  // Find which course this video belongs to
-  const course = video
-    ? COURSES.find(c => c.videoIds.includes(video.id))
-    : undefined;
 
   useEffect(() => {
     // Mark video as started when page loads
@@ -510,29 +506,6 @@ export const WatchPage: React.FC = () => {
               ))}
             </div>
 
-            {/* Course Link */}
-            {course && (
-              <div className="bg-[#13131A] border border-[#1E1E2E] rounded-xl p-4 mb-8">
-                <div className="flex items-center gap-4">
-                  <div
-                    className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl"
-                    style={{ backgroundColor: course.color }}
-                  >
-                    {course.iconEmoji}
-                  </div>
-                  <div className="flex-1">
-                    <p className="text-[#6B7280] text-sm">Part of</p>
-                    <h3 className="text-white font-semibold">{course.title}</h3>
-                  </div>
-                  <button
-                    onClick={() => navigate(`/course/${course.id}`)}
-                    className="px-4 py-2 bg-[#1E1E2E] text-white rounded-xl font-medium hover:bg-[#2E2E3E] transition-colors"
-                  >
-                    View Playbook
-                  </button>
-                </div>
-              </div>
-            )}
           </div>
 
           {/* Sidebar - Chapters + Related Videos */}

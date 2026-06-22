@@ -9,7 +9,7 @@ import {
 import { useGamification } from '../../contexts/GamificationContext';
 import { useLibrary } from '../../contexts/LibraryContext';
 import { gamificationService } from '../../services/gamificationService';
-import { INITIAL_VIDEOS, COURSES, formatDuration } from '../../constants';
+import { INITIAL_VIDEOS, formatDuration } from '../../constants';
 import { filterValidVideos } from '../../services/videoValidationService';
 import { FOUNDER_TOPICS } from '../../data/topics';
 import { getExperts } from '../../data/experts';
@@ -86,13 +86,23 @@ export const Dashboard: React.FC = () => {
     return 'Time to build';
   }, []);
 
-  // Hero carousel items — courses only. Course hero art is purpose-built (clean title
-  // treatment), unlike YouTube video thumbnails that bake the title into the image and
-  // clash with the overlaid title.
-  const heroCarouselItems: HeroCarouselItem[] = useMemo(
-    () => COURSES.slice(0, 6).map(c => ({ type: 'course' as const, item: c })),
-    []
-  );
+  // Hero carousel — a mix of Topics (explore) and standout videos (watch). No courses.
+  const heroCarouselItems: HeroCarouselItem[] = useMemo(() => {
+    const topicItems: HeroCarouselItem[] = FOUNDER_TOPICS.slice(0, 4).map(t => ({
+      type: 'topic' as const,
+      item: { id: t.id, title: t.title, blurb: t.blurb, cover: t.cover, accent: t.accent },
+    }));
+    const videoItems: HeroCarouselItem[] = validVideos
+      .filter(v => !v.isVertical)
+      .slice(0, 4)
+      .map(v => ({ type: 'video' as const, item: v }));
+    const mix: HeroCarouselItem[] = [];
+    for (let i = 0; i < 4; i++) {
+      if (topicItems[i]) mix.push(topicItems[i]);
+      if (videoItems[i]) mix.push(videoItems[i]);
+    }
+    return mix.slice(0, 6);
+  }, [validVideos]);
 
   // Handle company creation
   const handleCreateCompany = (name: string, description: string, industry: 'saas' | 'consumer' | 'marketplace' | 'fintech' | 'healthtech' | 'other') => {

@@ -513,7 +513,12 @@ export interface HeroCarouselCourseItem {
   item: Course;
 }
 
-export type HeroCarouselItem = HeroCarouselVideoItem | HeroCarouselCourseItem;
+export interface HeroCarouselTopicItem {
+  type: 'topic';
+  item: { id: string; title: string; blurb: string; cover: string; accent: string };
+}
+
+export type HeroCarouselItem = HeroCarouselVideoItem | HeroCarouselCourseItem | HeroCarouselTopicItem;
 
 // === FOUNDER JOURNEY TYPES ===
 

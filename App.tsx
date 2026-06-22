@@ -16,8 +16,6 @@ import { dataService } from './services/dataService';
 // Streaming components
 import {
   HomePage,
-  CoursesPage,
-  CourseDetailPage,
   WatchPage,
   MyListPage,
   ResourcesPage,
@@ -46,8 +44,6 @@ import { StartupChecklist } from './components/profile/StartupChecklist';
 // Games
 import { GamesPage } from './components/games';
 
-// Learn
-import { LearnPage, FlashcardPage, QuizPage, QuizPlayer, FillBlankPage } from './components/learn';
 
 // Home Dashboard
 import { Dashboard } from './components/home';
@@ -258,8 +254,9 @@ function App() {
                   <Route path="/search" element={<SearchPage />} />
 
                   {/* Courses */}
-                  <Route path="/courses" element={<CoursesPage />} />
-                  <Route path="/course/:courseId" element={<CourseDetailPage />} />
+                  {/* Courses (removed) — redirect to home */}
+                  <Route path="/courses" element={<Navigate to="/" replace />} />
+                  <Route path="/course/:courseId" element={<Navigate to="/" replace />} />
 
                   {/* Watch */}
                   <Route path="/watch/:videoId" element={<WatchPage />} />
@@ -305,11 +302,9 @@ function App() {
                   <Route path="/games/:gameId" element={<GamesPage />} />
 
                   {/* Learn hub (removed) — quizzes/flashcards still reachable from courses */}
+                  {/* Learn (removed) — redirect all to home */}
                   <Route path="/learn" element={<Navigate to="/" replace />} />
-                  <Route path="/learn/flashcards" element={<FlashcardPage />} />
-                  <Route path="/learn/quizzes" element={<QuizPage />} />
-                  <Route path="/learn/quiz/:quizId" element={<QuizPlayer />} />
-                  <Route path="/learn/fill-blank" element={<FillBlankPage />} />
+                  <Route path="/learn/*" element={<Navigate to="/" replace />} />
 
                   {/* CMS Routes */}
                   <Route path="/admin" element={<ProtectedCMSLayout />}>
@@ -324,7 +319,7 @@ function App() {
                     <Route path="collections" element={<VODManager />} />
                     <Route path="collections/:collectionId" element={<CollectionEditor />} />
                     <Route path="homepage" element={<HomepageEditor />} />
-                    <Route path="learn" element={<LearnPage />} />
+                    <Route path="learn" element={<Navigate to="/admin" replace />} />
                     <Route path="settings" element={
                       <ProtectedAdminPage
                         videos={videos}

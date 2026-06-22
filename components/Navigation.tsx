@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
-  BookOpen,
   Settings,
   Search,
   Home,
@@ -46,7 +45,6 @@ const Navigation: React.FC = () => {
     { path: '/', label: 'Home', icon: Home },
     { path: '/topics', label: 'Topics', icon: Compass },
     { path: '/experts', label: 'Experts', icon: Users },
-    { path: '/courses', label: 'Courses', icon: BookOpen, matchAlso: '/course' },
     { path: '/feed', label: 'Shorts', icon: MonitorPlay },
     { path: '/games', label: 'Games', icon: Gamepad2 },
   ];
@@ -61,7 +59,7 @@ const Navigation: React.FC = () => {
   const mobileNavItems = [
     { path: '/', label: 'Home', icon: Home },
     { path: '/topics', label: 'Topics', icon: Compass },
-    { path: '/courses', label: 'Courses', icon: BookOpen, matchAlso: '/course' },
+    { path: '/experts', label: 'Experts', icon: Users },
     { path: '/feed', label: 'Shorts', icon: MonitorPlay },
     { path: '/games', label: 'Games', icon: Gamepad2 },
   ];
@@ -288,7 +286,7 @@ const Navigation: React.FC = () => {
         <div className="flex items-center justify-around h-16 px-2">
           {mobileNavItems.map((item) => {
             const Icon = item.icon;
-            const active = isActive(item.path) || (item.matchAlso && isActive(item.matchAlso));
+            const active = isActive(item.path);
 
             return (
               <Link

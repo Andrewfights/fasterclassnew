@@ -31,6 +31,21 @@ const getItemDisplayProps = (carouselItem: HeroCarouselItem) => {
       badgeLabel: 'Featured',
       itemType: 'video' as const,
     };
+  } else if (carouselItem.type === 'topic') {
+    const topic = carouselItem.item;
+    return {
+      id: topic.id,
+      title: topic.title,
+      subtitle: 'Topic',
+      description: topic.blurb,
+      thumbnail: topic.cover,
+      duration: '',
+      tags: [topic.title],
+      navigateTo: `/topics/${topic.id}`,
+      actionLabel: 'Explore',
+      badgeLabel: 'Topic',
+      itemType: 'topic' as const,
+    };
   } else {
     const course = carouselItem.item;
     return {
